@@ -1,10 +1,1530 @@
-/**
- * @name 长青SVIP音源
- * @description 音源更新，关注微信公众号: 元力菌
- * @version 1.3.0
- * @author SVIP
- * @mail 微信公众号: 元力菌
- * @homepage 微信公众号: 元力菌
- * @update_url https://13413.kstore.vip/lxmusic/changqing.json
+/*!
+ * @name 回避聚合 (HuiBi Aggregate)
+ * @version 0.0.1
+ * @description 融合多源之精华，全平台母带/全景声，智能缓存+并发/顺序Fallback，支持酷我代理解密、ChKSz API。
+ * @author 回避
+ * @homepage https://github.com/your-repo/HuiBiAggregate
+ * @license MIT
+ * @update 2026-08-18
+ * @changelog
+ *   - 基于星澜 v3.2.0 与星海 v3.2.13 深度融合
+ *   - 新增用户配置区域（酷我代理解密、ChKSz apikey）
+ *   - 引入Token认证与客户端头（星海）
+ *   - 保留全部后端池
+ *   - 保留LRU缓存 + 并发/顺序Fallback
+ *   - 保留_u()混淆编码
+ *   - v0.0.1: 智能音质降级，超时5s，音质匹配校验，高音质后端优先
+ *   - 移除自动更新检查
+ *   - 酷狗速度优化：高音质8s超时，低音质3s超时
+ *   - 强制最高音质优先，拒绝降级到低音质
+ *
+ * ==================== 借鉴源标注 ====================
+ * 本音源综合以下开源音源之优点创作而成：
+ * 1. 独家音源 v5        - 动态配置思想、指纹/版本校验、混淆编码
+ * 2. 屿溪-终章          - 咪咕24bit/母带、酷狗/酷我官方接口、长青海棠
+ * 3. K×H测试·暗香浮动夜  - 混淆编码、日志脱敏、音质降级链、API分组并发竞速、
+ *                          QQ越权、ygking、残像、星海聚合、yunmge、念心、
+ *                          HelloWorld签名、FishAPI签名、FFAPI、酷我代理解密、
+ *                          Token认证、LRU缓存
+ * 4. 玉宁熙-Pro          - 缓存系统、版本检查、音质分平台定义
+ * 5. 星海音乐源 v2.2.8   - 动态源配置、服务器状态检查、音质映射
+ * 6. 星澜聚合音源 v3.2.0 - QQ/WY/KW/KG/MG 全平台后端池、SHA256纯JS实现、
+ *                          Promise.any并发、网易云EAPI加密
+ * 7. 星海音乐源 v3.2.13  - ChKSz API 支持、酷我代理解密配置、GD API音质映射
+ * ====================================================
  */
-const{EVENT_NAMES:_pVHY,request:_Upx,on:_ej,send:_MBDf}=globalThis.lx,_jd=((r,e,t)=>{let n="",l=18306;for(let o=0;o<r.length;o++){let g=r[o]+t^e[o%e.length]^l;n+=String.fromCharCode(g),l=g}return n})([-12019,35139,4763,23612,-13317],[20096,49526,19164,38015,1087,41218,5281,59913],14374),_qw=(((r,e,t)=>[-27579,-3624,-3882,36109,-28559,-7248,-28915,-3615,-3953,-29284,-28547,-7246,35795,-3613,-3947,36171,35430,-7187,35801,-3613,-3949,36170,35438,14073,35737,10481,10831,-29226,-28512].reduce((r,n,l)=>{let o=(n+t^e[l%e.length])+r.p;return r.r+=String.fromCharCode(o),r.p=o,r},{r:"",p:1944}).r)(0,[65121,25714,40152,65497,781,22080],29328)+((r,e,t)=>[69612,48089,64052,73976,34653,45699,70685,41529,66949,48101,64047,73981,78385,45701,42342,71558,46147,64930,64051,73978,34662,45678].reduce((r,n,l)=>{let o=(n-t^e[l%e.length])+r.p;return r.r+=String.fromCharCode(o),r.p=o,r},{r:"",p:58586}).r)(0,[43195,41191,40293,15311,54624,43590,18586,17734],23751)).slice(3,-1),_dab={kg:{"128k":((r,e,t)=>{let n="",l=47683;for(let o=0;o<r.length;o++){let g=(r[o]^e[o%e.length])-t^l;n+=String.fromCharCode(g),l=g}return n})([31797,60625,58683,34324,60622,58667,34328,60610],[41858,51551,49319],9607),"320k":((r,e,t)=>[31045,28879,-1487,-14968,-19240,32122].map((r,n)=>String.fromCharCode(r+t^e[n%e.length])).join(""))(0,[57176,54975,24641,11241,6839,58138,3164],26104),flac:(((r,e,t)=>[73700,23627,31143].reduce((r,n,l)=>{let o=n-t^e[l%e.length]^r.p;return r.r+=String.fromCharCode(o),r.p=o,r},{r:"",p:32851}).r)(0,[23876,6610,14103,63412,49477,60840,13412],17063)+((r,e,t)=>[4294905653,4294939500,4294918863,4294905650,4294939503].reduce((r,n,l)=>r+String.fromCharCode((n^e[l%e.length])+t),""))(0,[41845,16175,61064],21548)+((r,e,t)=>[22590,4294927095,4294906889].reduce((r,n,l)=>{let o=(n^e[l%e.length])+t+r.p;return r.r+=String.fromCharCode(o),r.p=o,r},{r:"",p:5305}).r)(0,[53275,65136,34928],25479)+((r,e,t)=>{let n="",l=51147;for(let o=0;o<r.length;o++){let g=r[o]-t^e[o%e.length]^l;n+=String.fromCharCode(g),l=g}return n})([33112,71248,61986,56634],[38660,58829,49577,44214],12402)).slice(3,-4)},tx:{"128k":(((r,e,t)=>[4294922051].map((r,n)=>String.fromCharCode((r^e[n%e.length])+t)).join(""))(0,[52227,59698,55782,25548],32051)+((r,e,t)=>{let n="",l=63249;for(let o=0;o<r.length;o++){let g=(r[o]^e[o%e.length])-t+l;n+=String.fromCharCode(g),l=g}return n})([40126,13180,74737,2529],[57164,2541,6540,13180,23298,58683,57616,19692],14992)+((r,e,t)=>[4294960094,4294923457].reduce((r,n,l)=>{let o=(n^e[l%e.length])+t^r.p;return r.r+=String.fromCharCode(o),r.p=o,r},{r:"",p:19364}).r)(0,[6815,63815,49021,18185],21119)+((r,e,t)=>{let n="",l=57991;for(let o=0;o<r.length;o++){let g=(r[o]+t^e[o%e.length])+l;n+=String.fromCharCode(g),l=g}return n})([29404,29665,-14194,25318,13319],[56083,14351,58180,46894,30712,44966,53656,52753],21532)).slice(1,-3),"320k":((r,e,t)=>[30663,76028,61114,23378,74765,76046].reduce((r,n,l)=>{let o=n-t^e[l%e.length]^r.p;return r.r+=String.fromCharCode(o),r.p=o,r},{r:"",p:62881}).r)(0,[53523,54801,39898,2147],21232),flac:(((r,e,t)=>[4294918722,4294946746].reduce((r,n,l)=>{let o=(n^e[l%e.length])+t^r.p;return r.r+=String.fromCharCode(o),r.p=o,r},{r:"",p:2560}).r)(0,[52456,11040,3634,56489,62954],31643)+((r,e,t)=>{let n="",l=63658;for(let o=0;o<r.length;o++){let g=(r[o]-t^e[o%e.length])+l;n+=String.fromCharCode(g),l=g}return n})([82647,23994,27675,62380],[59681,2456,6107,40845,23632],21534)+((r,e,t)=>{let n="",l=44229;for(let o=0;o<r.length;o++){let g=(r[o]^e[o%e.length])-t+l;n+=String.fromCharCode(g),l=g}return n})([38643,721,82180,114339,59996,50501],[59713,11989,27385,38238,50766],11268)+((r,e,t)=>[26266,27769].reduce((r,n,l)=>r+String.fromCharCode((n^e[l%e.length])-t),""))(0,[31060,29695,33776,33010,41746,42701,58592],8036)).slice(4,-2)},wy:{"128k":(((r,e,t)=>{let n="",l=40217;for(let o=0;o<r.length;o++){let g=(r[o]^e[o%e.length])+t+l;n+=String.fromCharCode(g),l=g}return n})([65043,27202],[56732,43585,2593,56471,54840,12229,5327],16317)+((r,e,t)=>[29351,71575].reduce((r,n,l)=>{let o=n-t^e[l%e.length]^r.p;return r.r+=String.fromCharCode(o),r.p=o,r},{r:"",p:27251}).r)(0,[20794,57389,20702],14189)+((r,e,t)=>{let n="",l=38146;for(let o=0;o<r.length;o++){let g=(r[o]+t^e[o%e.length])+l;n+=String.fromCharCode(g),l=g}return n})([57625,15971,55368],[33022,18662,7462,54883,10988,18224],2696)+((r,e,t)=>[29033,53620,88915,28998].reduce((r,n,l)=>r+String.fromCharCode(n-t^e[l%e.length]),""))(0,[4697,29233,64582],24369)).slice(2,-1),"320k":((r,e,t)=>[23780,40257,41692,23792,40258,41692].reduce((r,n,l)=>r+String.fromCharCode(n+t^e[l%e.length]),""))(0,[40439,56727,58338],16558),flac:(((r,e,t)=>{let n="",l=53812;for(let o=0;o<r.length;o++){let g=r[o]+t^e[o%e.length]^l;n+=String.fromCharCode(g),l=g}return n})([50615,41360,40555,16902,1285],[6364,42678,41836,18179,2531,12484,25837,11223],1274)+((r,e,t)=>{let n="",l=42276;for(let o=0;o<r.length;o++){let g=(r[o]^e[o%e.length])+t+l;n+=String.fromCharCode(g),l=g}return n})([60691,47880,15946],[63078,31511,65109],16346)+((r,e,t)=>{let n="",l=44818;for(let o=0;o<r.length;o++){let g=(r[o]^e[o%e.length])-t^l;n+=String.fromCharCode(g),l=g}return n})([40785,14487,57518],[16679,6018,53222,25206,22006],12053)+((r,e,t)=>[28405,37293,57994].reduce((r,n,l)=>{let o=(n+t^e[l%e.length])+r.p;return r.r+=String.fromCharCode(o),r.p=o,r},{r:"",p:51150}).r)(0,[20068,39348,5441,36239,7639],2055)).slice(2,-4)},kw:{"128k":(((r,e,t)=>[4294919150,4294962251,4294903905,4294922233,4294919125,4294962264,4294903884,4294922198,4294919131].map((r,n)=>String.fromCharCode((r^e[n%e.length])+t)).join(""))(0,[42873,2298,60627,43878],7106)+((r,e,t)=>{let n="",l=1499;for(let o=0;o<r.length;o++){let g=(r[o]^e[o%e.length])-t^l;n+=String.fromCharCode(g),l=g}return n})([43686],[48896,8215,3707,49407,50059,37576],4100)).slice(1,-1),"320k":((r,e,t)=>{let n="",l=14379;for(let o=0;o<r.length;o++){let g=r[o]-t^e[o%e.length]^l;n+=String.fromCharCode(g),l=g}return n})([55440,34383,84049,67139,54932,79326],[17072,10400,60079,43184,30988,55363,51058],23954),flac:(((r,e,t)=>[38404,62944,31330].reduce((r,n,l)=>r+String.fromCharCode(n-t^e[l%e.length]),""))(0,[27962,52550,20975,44438],10403)+((r,e,t)=>[66130,36049,64579,2285,40921,31356].reduce((r,n,l)=>{let o=(n^e[l%e.length])-t^r.p;return r.r+=String.fromCharCode(o),r.p=o,r},{r:"",p:55198}).r)(0,[10839,56518,44108,22725,53205],20492)+((r,e,t)=>[44163,-10439].reduce((r,n,l)=>{let o=n+t^e[l%e.length]^r.p;return r.r+=String.fromCharCode(o),r.p=o,r},{r:"",p:14399}).r)(0,[50365,10123,6043],20580)+((r,e,t)=>{let n="",l=54868;for(let o=0;o<r.length;o++){let g=(r[o]^e[o%e.length])-t^l;n+=String.fromCharCode(g),l=g}return n})([70616,799,39740],[7501,15321,41952,11570,10594,4446,39281,41419],14446)).slice(4,-2)},mg:{"128k":(((r,e,t)=>{let n="",l=54823;for(let o=0;o<r.length;o++){let g=(r[o]-t^e[o%e.length])+l;n+=String.fromCharCode(g),l=g}return n})([33114,62707,76910],[10540,35150,20936,733,22769,34334],32329)+((r,e,t)=>{let n="",l=8063;for(let o=0;o<r.length;o++){let g=r[o]-t^e[o%e.length]^l;n+=String.fromCharCode(g),l=g}return n})([13792,45367,28051,6885],[652,39167,21824],6220)+((r,e,t)=>{let n="",l=3720;for(let o=0;o<r.length;o++){let g=(r[o]-t^e[o%e.length])+l;n+=String.fromCharCode(g),l=g}return n})([59182,34742,77996,82258],[38985,62913,19664,50114,52730],32127)+((r,e,t)=>[64141,71780,40004].reduce((r,n,l)=>{let o=n-t^e[l%e.length]^r.p;return r.r+=String.fromCharCode(o),r.p=o,r},{r:"",p:52641}).r)(0,[1199,59209,27419,40875],12579)).slice(4,-2),"320k":((r,e,t)=>[41370,12309,41204,34636,140,5825].reduce((r,n,l)=>{let o=(n+t^e[l%e.length])+r.p;return r.r+=String.fromCharCode(o),r.p=o,r},{r:"",p:44670}).r)(0,[33950,25575,11043,47914,52117,19105],13279),flac:((r,e,t)=>{let n="",l=53828;for(let o=0;o<r.length;o++){let g=r[o]+t^e[o%e.length]^l;n+=String.fromCharCode(g),l=g}return n})([15491,48974,48603,7593,50957,29454,3090,4659],[46061,58515,58113,17131,60496,39001,12610,14197],9538)}},_ru={kg:{musicUrl(r,e){let t="";const n=r.hash;return console.log(e,n),t=`http://yinyue.haitangw.net/kg/kg_song_kw.php?type=mp3&id=${n}&level=${e}`,new Promise(r=>{r(t)})}},tx:{musicUrl(r,e){let t="";const n=r.songmid;return console.log(e,n),t=`http://yinyue.haitangw.net/qq/qq_kw.php?type=mp3&id=${n}&level=${e}`,new Promise(r=>{r(t)})}},wy:{musicUrl(r,e){let t="";const n=r.songmid;return console.log(e,n),t=`http://yinyue.haitangw.net/wy/wy.php?type=mp3&id=${n}&level=${e}`,new Promise(r=>{r(t)})}},kw:{musicUrl(r,e){let t="";const n=r.songmid;return console.log(e,n),t=`http://yinyue.haitangw.net/kw/kw.php?type=mp3&id=${n}&level=${e}`,new Promise(r=>{r(t)})}},mg:{musicUrl(r,e){let t="";const n=r.songmid;return console.log(e,n),t=`http://yinyue.haitangw.net/mg/migu.php?type=mp3&id=${n}&level=${e}`,new Promise(r=>{r(t)})}}},_nzi=(r,e)=>{const t=r.split(((r,e,t)=>{let n=r.length,l="";for(;n--;)l=String.fromCharCode(r[n]+t^e[n%e.length])+l;return l})([28528],[43730,50390,36764,24934,6264,37200],15244)).map(Number),n=e.split(((r,e,t)=>{let n="",l=26716;for(let o=0;o<r.length;o++){let g=r[o]+t^e[o%e.length]^l;n+=String.fromCharCode(g),l=g}return n})([13822],[62765,57060,16736,31878,17439],26465)).map(Number);for(let r=0;r<Math.max(t.length,n.length);r++){const e=t[r]||0,l=n[r]||0;if(e>l)return 1;if(e<l)return-1}return 0},_ui=async()=>new Promise((r,e)=>{var t,n;_Upx(_qw,{method:(t=[5984,46691,64106,18135,43054,24446,64421],n=675,[40449,111810,63704].reduce((r,e,l)=>{let o=(e^t[l%t.length])-n+r.p;return r.r+=String.fromCharCode(o),r.p=o,r},{r:"",p:31113}).r),timeout:3e3},(e,t)=>{if(e||t.statusCode!==99924+99724-99724)return console.log((n=[31241,50954,25722,36285],l=26134,[4294946959,4294929925,4294966913,4294906003,4294945890,43764,17267].reduce((r,e,t)=>{let o=(e^n[t%n.length])+l^r.p;return r.r+=String.fromCharCode(o),r.p=o,r},{r:"",p:22620}).r),e||t.statusMessage),void r(null);var n,l,o,g;try{const e=t.body;_nzi(_jd,e.version)<0?r({version:e.version,updateUrl:e.updateUrl,description:e.description||""}):r(null)}catch(e){console.log((((r,e,t)=>{let n="",l=14636;for(let o=0;o<r.length;o++){let g=(r[o]+t^e[o%e.length])+l;n+=String.fromCharCode(g),l=g}return n})([18506,19041,11183,-6585],[27388,20491,28406,49785],25983)+((r,e,t)=>{let n="",l=617;for(let o=0;o<r.length;o++){let g=(r[o]^e[o%e.length])-t+l;n+=String.fromCharCode(g),l=g}return n})([6806,35855,79494],[39149,41987,9406,15004,54244,53500,4002,5596],7508)+(o=[32034,43333,50685,62558,40048,30532,31340,38983],g=20720,[32566,26843,-5041,30394].reduce((r,e,t)=>{let n=(e+g^o[t%o.length])+r.p;return r.r+=String.fromCharCode(n),r.p=n,r},{r:"",p:41693}).r)+((r,e,t)=>{let n="",l=29273;for(let o=0;o<r.length;o++){let g=(r[o]^e[o%e.length])-t^l;n+=String.fromCharCode(g),l=g}return n})([16290,10773,24328],[34705,27682,6871,27245,13958],17872)).slice(3,-2),e),r(null)}})});_ej(_pVHY.request,({source:r,action:e,info:t})=>{if(e===((r,e,t)=>{let n="",l=50602;for(let o=0;o<r.length;o++){let g=(r[o]+t^e[o%e.length])+l;n+=String.fromCharCode(g),l=g}return n})([4811,-5508,-24438,-22566,-10332,10550,29479,-22578],[45619,24745,59729,57865],30245))return console.log(_ru[r].musicUrl(t.musicInfo,_dab[r][t.type]),r),_ru[r].musicUrl(t.musicInfo,_dab[r][t.type])}),_ui().then(r=>{if(r){const e=`发现新版本 v${r.version}\n${r.description?(E=[1197,22908,59164,138,34923],z=17761,[29078,5335,36296,-15019,36487,-16554].reduce((r,e,t)=>{let n=e+z^E[t%E.length]^r.p;return r.r+=String.fromCharCode(n),r.p=n,r},{r:"",p:54446}).r+r.description+(N=[663,47639,44837,35575,53319,17753,22587,20151],T=15611,[2474].reduce((r,e,t)=>{let n=(e^N[t%N.length])+T^r.p;return r.r+=String.fromCharCode(n),r.p=n,r},{r:"",p:18482}).r)):""}请更新后使用`;return _MBDf(_pVHY.updateAlert,{log:e,updateUrl:r.updateUrl}),void console.log(((r,e,t)=>{let n=r.length,l="";for(;n--;)l=String.fromCharCode((r[n]^e[n%e.length])+t)+l;return l})([4294922338,37571,4294927335,45803,4294927951,4294908011,38227,34962,4294926627,4294920067,4294909775,34653,4294919439,4294933269,4294920778,4294929721,4294930814,4294934028,4294922533,4294909785],[45931,36907,38671],28872),r)}var e,t,n,l,o,g,h,C,i,u,p,d,f,a,m,c,S,s,y,_,w,k,q,v,U,j,$,x,b,M,D,P,V,H,Y,B,N,T,E,z;console.log(((r,e,t)=>{let n="",l=47455;for(let o=0;o<r.length;o++){let g=(r[o]+t^e[o%e.length])+l;n+=String.fromCharCode(g),l=g}return n})([-2975,48916,26137,57241,944,12197,2226,24794,20086,12170,11074,48669,29220,-4561],[46412,10641,35285,62413,8406],7255)),_MBDf(_pVHY.inited,{openDevTools:!1,sources:{kg:{name:((r,e,t)=>{let n="",l=2179;for(let o=0;o<r.length;o++){let g=(r[o]+t^e[o%e.length])+l;n+=String.fromCharCode(g),l=g}return n})([5087,32601,16900,19657],[35771,6193,15860,864,57452,22072],26740),type:((r,e,t)=>{let n="",l=40859;for(let o=0;o<r.length;o++){let g=(r[o]^e[o%e.length])-t+l;n+=String.fromCharCode(g),l=g}return n})([33168,5644,81914,85549,95007],[20629,26167,20427,15876,818,64896,4186],28723),actions:[(Y=[22202,7893,59220,31302,453,32352,32317],B=18724,[32653,-10846,40531,12537,-18310].reduce((r,e,t)=>{let n=e+B^Y[t%Y.length]^r.p;return r.r+=String.fromCharCode(n),r.p=n,r},{r:"",p:40534}).r+(V=[57088,17587,17563,8324,14802],H=3398,[53947,18698,18740,11565,13385].map((r,e)=>String.fromCharCode((r^V[e%V.length])-H)).join(""))+(D=[17093,29549,5096,44939],P=14853,[52053,50844,75316,59795].reduce((r,e,t)=>{let n=(e-P^D[t%D.length])+r.p;return r.r+=String.fromCharCode(n),r.p=n,r},{r:"",p:11485}).r)).slice(4,-2)],qualitys:[(b=[41970,51754,22874,61137,17831,11705,37907,61704],M=25490,[5459,43455,15046,36148].reduce((r,e,t)=>{let n=(e^b[t%b.length])-M^r.p;return r.r+=String.fromCharCode(n),r.p=n,r},{r:"",p:21310}).r),($=[6158,14165,51602],x=20876,[18865,26347,38958,18937].reduce((r,e,t)=>r+String.fromCharCode((e^$[t%$.length])-x),"")),((r,e,t)=>{let n=r.length,l="";for(;n--;)l=String.fromCharCode((r[n]^e[n%e.length])+t)+l;return l})([4294933143,4294913668,4294906080,4294907723],[37411,50750,63567,65530],6066)]},tx:{name:(U=[15377,6279,25210,32031,45765,51640,33772,13165],j=8981,[77162,15262,55530,42093].reduce((r,e,t)=>{let n=(e^U[t%U.length])-j+r.p;return r.r+=String.fromCharCode(n),r.p=n,r},{r:"",p:4622}).r),type:(q=[26104,17983,35047,10188,2076,55945,12952],v=26992,[4294940094,4294955175,7785,45386,40598].reduce((r,e,t)=>{let n=(e^q[t%q.length])+v+r.p;return r.r+=String.fromCharCode(n),r.p=n,r},{r:"",p:42679}).r),actions:[(((r,e,t)=>{let n="",l=51681;for(let o=0;o<r.length;o++){let g=(r[o]^e[o%e.length])+t+l;n+=String.fromCharCode(g),l=g}return n})([4294960211,4294947929,24038,4294936818,4294961938],[22873,12971,56143,3632,28157],31038)+(w=[5221,63017,42253,50061,2278],k=23114,[25891,86137,65377,73169].reduce((r,e,t)=>{let n=e-k^w[t%w.length]^r.p;return r.r+=String.fromCharCode(n),r.p=n,r},{r:"",p:7881}).r)+((r,e,t)=>{let n="",l=31703;for(let o=0;o<r.length;o++){let g=(r[o]^e[o%e.length])-t^l;n+=String.fromCharCode(g),l=g}return n})([25459,15376],[64075,8653,63392,10667,37637],7606)+(y=[41981,43205,8928,60917,17968,7485,50432,49699],_=32333,[120960,120532,23739].reduce((r,e,t)=>{let n=(e^y[t%y.length])-_+r.p;return r.r+=String.fromCharCode(n),r.p=n,r},{r:"",p:828}).r)).slice(4,-2)],qualitys:[((r,e,t)=>{let n="",l=28001;for(let o=0;o<r.length;o++){let g=(r[o]^e[o%e.length])+t^l;n+=String.fromCharCode(g),l=g}return n})([33389,4294935672,4294903649,4294907758],[60217,30847,64367],1020),(S=[51141,49905,57530,17853],s=24095,[34595,4294927123,4294918489,4294961025].reduce((r,e,t)=>{let n=(e^S[t%S.length])+s^r.p;return r.r+=String.fromCharCode(n),r.p=n,r},{r:"",p:40758}).r),((r,e,t)=>{let n="",l=4300;for(let o=0;o<r.length;o++){let g=(r[o]^e[o%e.length])-t^l;n+=String.fromCharCode(g),l=g}return n})([8609,35084,45461,48242],[28989,46832,36458,33670],16370)]},wy:{name:(m=[48059,17075,11103],c=32742,[81958,49827,81083,57854].reduce((r,e,t)=>{let n=e-c^m[t%m.length]^r.p;return r.r+=String.fromCharCode(n),r.p=n,r},{r:"",p:31628}).r),type:((r,e,t)=>{let n="",l=60889;for(let o=0;o<r.length;o++){let g=(r[o]^e[o%e.length])-t^l;n+=String.fromCharCode(g),l=g}return n})([127920,40746,55785,33034,40740],[51163,55781,40788],18103),actions:[(f=[19947,42042,38308,7584,62495,60256],a=24177,[4294962199,4294903358,4294916006,4294949976,4294923757,4294920836,4294963178,4294903233].reduce((r,e,t)=>r+String.fromCharCode((e^f[t%f.length])+a),""))],qualitys:[((r,e,t)=>{let n="",l=50307;for(let o=0;o<r.length;o++){let g=r[o]+t^e[o%e.length]^l;n+=String.fromCharCode(g),l=g}return n})([32995,23896,41586,51516],[21783,28185,45886,55725,20478,26410],4290),((r,e,t)=>{let n="";for(let l=0;l<r.length;l++)n+=String.fromCharCode((r[l]^e[l%e.length])+t);return n})([4294911217,4294963169,4294954569,4294940379],[55571,4608,13206,26817,23617,57555,53321,34621],593),(p=[25091,9227,11163,44421,33020,3831],d=12485,[70570,21702,23643,56908].reduce((r,e,t)=>{let n=e-d^p[t%p.length]^r.p;return r.r+=String.fromCharCode(n),r.p=n,r},{r:"",p:32896}).r)]},kw:{name:(i=[27591,44663,48145,16848,8007,27851,17059,54975],u=29386,[-4172,15281,-18269,33987].reduce((r,e,t)=>{let n=(e+u^i[t%i.length])+r.p;return r.r+=String.fromCharCode(n),r.p=n,r},{r:"",p:63154}).r),type:((r,e,t)=>{let n="",l=16404;for(let o=0;o<r.length;o++){let g=(r[o]+t^e[o%e.length])+l;n+=String.fromCharCode(g),l=g}return n})([-11448,10271,38459,-1211,19647],[52473,24959,12397,52075,31213],14680),actions:[(((r,e,t)=>{let n="",l=56957;for(let o=0;o<r.length;o++){let g=(r[o]^e[o%e.length])-t+l;n+=String.fromCharCode(g),l=g}return n})([12255,114565,37172,431,114675],[18426,63928,55105],17997)+((r,e,t)=>{let n="",l=5849;for(let o=0;o<r.length;o++){let g=r[o]-t^e[o%e.length]^l;n+=String.fromCharCode(g),l=g}return n})([29857,34912,62334,66253,50878,25128],[8720,18517,45899,49899,34467],16385)).slice(2,-1)],qualitys:[(h=[59013,6162,54928,53646,10398,45580],C=18863,[44901,20979,40823,39828].reduce((r,e,t)=>r+String.fromCharCode((e^h[t%h.length])-C),"")),((r,e,t)=>{let n="",l=16380;for(let o=0;o<r.length;o++){let g=r[o]-t^e[o%e.length]^l;n+=String.fromCharCode(g),l=g}return n})([70684,67544,11828,24170],[50965,60567,4848,17267,48781,19709,13771,61750],6978),((r,e,t)=>{let n="",l=42792;for(let o=0;o<r.length;o++){let g=(r[o]^e[o%e.length])-t+l;n+=String.fromCharCode(g),l=g}return n})([7110,51208,65786,20857],[17572,52770,1763,22367],1572)]},mg:{name:((r,e,t)=>{let n="",l=49946;for(let o=0;o<r.length;o++){let g=(r[o]^e[o%e.length])+t+l;n+=String.fromCharCode(g),l=g}return n})([4294953710,30939,11618,32036],[11249,56093,5690,9997,44343,11217,41749],23604),type:(o=[57564,16906,25676,46886,58549,4092,12729,31147],g=11242,[37028,28140,51100,29882,18233].reduce((r,e,t)=>{let n=(e-g^o[t%o.length])+r.p;return r.r+=String.fromCharCode(n),r.p=n,r},{r:"",p:31751}).r),actions:[(n=[20412,21624,16334,40850,36569,9549,31935],l=10237,[10986,31837,26565,51077,46800,19832,42133,30623].reduce((r,e,t)=>{let o=e-l^n[t%n.length]^r.p;return r.r+=String.fromCharCode(o),r.p=o,r},{r:"",p:19772}).r)],qualitys:[((r,e,t)=>{let n="",l=57688;for(let o=0;o<r.length;o++){let g=(r[o]^e[o%e.length])+t^l;n+=String.fromCharCode(g),l=g}return n})([27504,4294932571,4294966196,4294950395],[7232,60817,28261,11233],27193),(e=[43211,36068,237,59257,15722,41839],t=9914,[39943,26155,-9675,49256].reduce((r,n,l)=>{let o=n+t^e[l%e.length]^r.p;return r.r+=String.fromCharCode(o),r.p=o,r},{r:"",p:27193}).r),((r,e,t)=>{let n="",l=40800;for(let o=0;o<r.length;o++){let g=(r[o]+t^e[o%e.length])+l;n+=String.fromCharCode(g),l=g}return n})([50075,-1090,40817,-3433],[40297,13460,10160,11113,14576,30864,25256,54556],14548)]}}})}).catch(r=>{var e,t,n,l,o,g,h,C,i,u,p,d,f,a,m,c,S,s,y,_,w,k,q,v,U,j,$,x,b,M,D,P,V,H,Y,B,N,T,E,z,A,I,F,G,J,K,L,O;console.log((o=[45837,23739,18260],g=31773,[26309,-18252,15444,-12315,9706,12033,29685,-17525].reduce((r,e,t)=>{let n=(e+g^o[t%o.length])+r.p;return r.r+=String.fromCharCode(n),r.p=n,r},{r:"",p:44647}).r+(n=[33381,38695,53139,49225,42375,62148],l=1159,[5998,31081,8397,50030,20803].reduce((r,e,t)=>{let o=(e^n[t%n.length])+l+r.p;return r.r+=String.fromCharCode(o),r.p=o,r},{r:"",p:53713}).r)+(e=[13654,61443,23050],t=4263,[43482,65731,27319,17873,65821].reduce((r,n,l)=>{let o=n-t^e[l%e.length]^r.p;return r.r+=String.fromCharCode(o),r.p=o,r},{r:"",p:44127}).r)).slice(1,-4),r),_MBDf(_pVHY.inited,{openDevTools:!1,sources:{kg:{name:((r,e,t)=>{let n="",l=6113;for(let o=0;o<r.length;o++){let g=(r[o]^e[o%e.length])+t^l;n+=String.fromCharCode(g),l=g}return n})([23582,4294931535,12889,60596],[22766,39229,46755,11197,38891,64431,43736],4762),type:(L=[44199,12099,58697],O=19020,[4408,25895,44827,59073,25877].reduce((r,e,t)=>{let n=(e^L[t%L.length])-O^r.p;return r.r+=String.fromCharCode(n),r.p=n,r},{r:"",p:29502}).r),actions:[(J=[26388,24997,6376,46403,21217,13117],K=16661,[25388,23891,-10315,29750,27658,35766].reduce((r,e,t)=>{let n=(e+K^J[t%J.length])+r.p;return r.r+=String.fromCharCode(n),r.p=n,r},{r:"",p:15657}).r+((r,e,t)=>{let n=r.length,l="";for(;n--;)l=String.fromCharCode(r[n]+t^e[n%e.length])+l;return l})([40982,-855,16296,7414,54897],[49118,7173,24381,15601,63098,32982,46146,15046],8103)).slice(2,-1)],qualitys:[(F=[9028,50131,31067,59037,62523,27123,7076,11092],G=19286,[-10209,30859,11789,39840].map((r,e)=>String.fromCharCode(r+G^F[e%F.length])).join("")),(A=[33332,30142,34456,4286,883],I=1803,[32830,31946,36261,6128].reduce((r,e,t)=>{let n=e-I^A[t%A.length]^r.p;return r.r+=String.fromCharCode(n),r.p=n,r},{r:"",p:64308}).r),(E=[17029,40490,65453],z=18499,[47324,54887,47101,2752].reduce((r,e,t)=>{let n=(e^E[t%E.length])-z^r.p;return r.r+=String.fromCharCode(n),r.p=n,r},{r:"",p:45680}).r)]},tx:{name:(N=[7997,22428,16710,56258,37545,17503],T=11544,[70776,33960,66533,12153].reduce((r,e,t)=>{let n=e-T^N[t%N.length]^r.p;return r.r+=String.fromCharCode(n),r.p=n,r},{r:"",p:63529}).r),type:((r,e,t)=>{let n="",l=6133;for(let o=0;o<r.length;o++){let g=r[o]+t^e[o%e.length]^l;n+=String.fromCharCode(g),l=g}return n})([-23330,16115,13136,-1077,1909],[258,45239,42250,28061,31035],29116),actions:[(Y=[31965,51510,64256,49804,55230],B=6296,[44697,53717,58304,55879,53030,25709].reduce((r,e,t)=>{let n=(e^Y[t%Y.length])-B^r.p;return r.r+=String.fromCharCode(n),r.p=n,r},{r:"",p:47505}).r+((r,e,t)=>{let n="",l=48162;for(let o=0;o<r.length;o++){let g=(r[o]^e[o%e.length])-t^l;n+=String.fromCharCode(g),l=g}return n})([67012,61265,36004,38331,16830],[7703,45261,54056,51715],24450)+((r,e,t)=>{let n="",l=43706;for(let o=0;o<r.length;o++){let g=(r[o]-t^e[o%e.length])+l;n+=String.fromCharCode(g),l=g}return n})([57111,23699,37988,57051,71217],[61131,50981,36648,47879,62090,16733,15926,18906],9118)).slice(4,-4)],qualitys:[((r,e,t)=>{let n="";for(let l=0;l<r.length;l++)n+=String.fromCharCode((r[l]^e[l%e.length])-t);return n})([17442,18385,60889,46933],[24788,25382,51492,37477,47151,3306,24121,8622],9413),(V=[15359,2197,40988,58094],H=20632,[32733,22828,61622,78669].reduce((r,e,t)=>{let n=e-H^V[t%V.length]^r.p;return r.r+=String.fromCharCode(n),r.p=n,r},{r:"",p:5257}).r),((r,e,t)=>{let n="",l=59758;for(let o=0;o<r.length;o++){let g=(r[o]^e[o%e.length])-t+l;n+=String.fromCharCode(g),l=g}return n})([14268,59218,67450,31301],[28602,42566,18041,15189,40038,42029,22629,5830],16654)]},wy:{name:(D=[53125,53408,6484,56475,43458,37471],P=21424,[74658,74889,57943,59003].map((r,e)=>String.fromCharCode(r-P^D[e%D.length])).join("")),type:((r,e,t)=>{let n="",l=61615;for(let o=0;o<r.length;o++){let g=(r[o]^e[o%e.length])-t+l;n+=String.fromCharCode(g),l=g}return n})([28161,919,77467,77499,118352],[61278,29246,24324,24364,49099,40868,23382],29089),actions:[((r,e,t)=>{let n="",l=19068;for(let o=0;o<r.length;o++){let g=r[o]+t^e[o%e.length]^l;n+=String.fromCharCode(g),l=g}return n})([2985,-18177,-7030,-11868,-18195,-7014,-11913,-18175],[15597,9290,20443],27475)],qualitys:[(b=[55567,50824,21258,27683,34858],M=28747,[83117,79574,49995,56507].reduce((r,e,t)=>{let n=e-M^b[t%b.length]^r.p;return r.r+=String.fromCharCode(n),r.p=n,r},{r:"",p:3420}).r),($=[16988,97,9508,62330],x=23621,[4294959538,4294943628,4294936271,4294924124].map((r,e)=>String.fromCharCode((r^$[e%$.length])+x)).join("")),((r,e,t)=>{let n="",l=54159;for(let o=0;o<r.length;o++){let g=(r[o]^e[o%e.length])+t^l;n+=String.fromCharCode(g),l=g}return n})([50927,4294947141,4294921769,4294939334],[31473,22906,42603],6091)]},kw:{name:((r,e,t)=>{let n="",l=42934;for(let o=0;o<r.length;o++){let g=(r[o]^e[o%e.length])-t^l;n+=String.fromCharCode(g),l=g}return n})([92795,18825,50263,85266],[24951,10946,16100,29120,39328,56544],25391),type:(U=[61967,44729,53995],j=20410,[2261,24295,33587,41563,24313].reduce((r,e,t)=>{let n=e+j^U[t%U.length]^r.p;return r.r+=String.fromCharCode(n),r.p=n,r},{r:"",p:43757}).r),actions:[(((r,e,t)=>{let n="";for(let l=0;l<r.length;l++)n+=String.fromCharCode((r[l]^e[l%e.length])+t);return n})([4294906562,4294907206,4294939390,4294966210],[56577,55979,23819,13361,49343,19421,38884,24743],12416)+(q=[49550,44795,57346,52494,20012,49897],v=5851,[36077,38934,51545].reduce((r,e,t)=>{let n=e+v^q[t%q.length]^r.p;return r.r+=String.fromCharCode(n),r.p=n,r},{r:"",p:25135}).r)+(w=[33387,24883,48770,11476,27179],k=30657,[4294904538,4294961560,4294915617].map((r,e)=>String.fromCharCode((r^w[e%w.length])+k)).join(""))+((r,e,t)=>{let n=r.length,l="";for(;n--;)l=String.fromCharCode(r[n]+t^e[n%e.length])+l;return l})([31287,13699],[32187,14605,53799],934)).slice(1,-3)],qualitys:[((r,e,t)=>{let n="",l=15964;for(let o=0;o<r.length;o++){let g=(r[o]+t^e[o%e.length])+l;n+=String.fromCharCode(g),l=g}return n})([3621,26364,8320,28386],[54128,27517,9478,29521],1152),(y=[32549,48063,56664,55870,30393,57738,46022,42247],_=24249,[78332,124167,99311,33994].reduce((r,e,t)=>{let n=(e^y[t%y.length])-_+r.p;return r.r+=String.fromCharCode(n),r.p=n,r},{r:"",p:4115}).r),(S=[33625,12343,59474,44e3,62822,7675,28302],s=31519,[83768,43856,37574,75521].reduce((r,e,t)=>{let n=(e-s^S[t%S.length])+r.p;return r.r+=String.fromCharCode(n),r.p=n,r},{r:"",p:45350}).r)]},mg:{name:(m=[19185,62375,43949,48169,32195,39354,33394],c=5713,[38988,4294908446,10990,32635].reduce((r,e,t)=>{let n=(e^m[t%m.length])+c^r.p;return r.r+=String.fromCharCode(n),r.p=n,r},{r:"",p:59747}).r),type:(f=[60801,57556,60860,65417,61394,50092],a=6850,[21801,50698,54008,58577,54550].reduce((r,e,t)=>{let n=e+a^f[t%f.length]^r.p;return r.r+=String.fromCharCode(n),r.p=n,r},{r:"",p:33287}).r),actions:[(((r,e,t)=>{let n="",l=26019;for(let o=0;o<r.length;o++){let g=r[o]+t^e[o%e.length]^l;n+=String.fromCharCode(g),l=g}return n})([40772,-7123,41530,6149,31095],[43035,4780,53468,18057],11914)+(p=[61464,31919,9590],d=23207,[35558,8690,-13654,38239,8686].reduce((r,e,t)=>{let n=e+d^p[t%p.length]^r.p;return r.r+=String.fromCharCode(n),r.p=n,r},{r:"",p:5622}).r)+((r,e,t)=>{let n="",l=24775;for(let o=0;o<r.length;o++){let g=(r[o]^e[o%e.length])-t^l;n+=String.fromCharCode(g),l=g}return n})([11859],[22844,3758,859],5745)).slice(1,-2)],qualitys:[(i=[40527,25030,42478,20812,47441,8919],u=23333,[45035,4294952218,4294902031,4294964290].reduce((r,e,t)=>{let n=(e^i[t%i.length])+u+r.p;return r.r+=String.fromCharCode(n),r.p=n,r},{r:"",p:29544}).r),(h=[61043,54563,38322,54106,63803,26877,15889,44568],C=19816,[18993,4294928314,4294911784,4294926761].reduce((r,e,t)=>{let n=(e^h[t%h.length])+C^r.p;return r.r+=String.fromCharCode(n),r.p=n,r},{r:"",p:61849}).r),((r,e,t)=>{let n="",l=2372;for(let o=0;o<r.length;o++){let g=(r[o]^e[o%e.length])-t^l;n+=String.fromCharCode(g),l=g}return n})([22140,35199,41279,54397],[14448,60811,50632,45201,4460,27755],25834)]}}})});
+
+const { EVENT_NAMES, request, on, send, utils, env, version, currentScriptInfo } = globalThis.lx;
+
+// ==================== 用户配置区域 ====================
+const USER_CONFIG = {
+    kwDecrypt: {
+        url: '',
+        allowEncryptedLossless: false,
+        urlParamName: 'url',
+        ekeyParamName: 'ekey',
+    },
+    chksz: {
+        apikey: '',
+        enableNetease: true,
+        enableQQ: true,
+    },
+    debug: false,
+};
+
+// ==================== 解码函数 ====================
+const _u = (str) => str.split('').map(c => String.fromCharCode(c.charCodeAt(0) + 5)).join('');
+
+// ==================== 解析头部注解（支持 Cookie） ====================
+const currentScript = currentScriptInfo
+    ? currentScriptInfo.rawScript
+    : (typeof document !== 'undefined' ? document.currentScript?.textContent || '' : '');
+
+const parseHeader = (str) => {
+    const comment = /^\/\*!(?:.|\n)+?\*\//.exec(str)?.[0];
+    if (!comment) return {};
+    const result = {};
+    const pairs = [
+        { key: 'tx_cookie', regex: /\*\s*@tx_cookie\s+(.+)/ },
+        { key: 'wy_cookie', regex: /\*\s*@wy_cookie\s+(.+)/ },
+    ];
+    for (const { key, regex } of pairs) {
+        const match = regex.exec(comment);
+        const val = match?.[1]?.trim();
+        result[key] = (!val || val === 'null') ? '' : val;
+    }
+    return result;
+};
+const config = parseHeader(currentScript);
+const TX_COOKIE = config.tx_cookie;
+const WY_COOKIE = config.wy_cookie;
+const HAS_TX_COOKIE = !!TX_COOKIE;
+const HAS_WY_COOKIE = !!WY_COOKIE;
+
+// ==================== 音质列表（固定全音质） ====================
+const MUSIC_QUALITY = {
+    tx: ['128k','192k','320k','flac','flac24bit','hires','atmos','atmos_plus','master'],
+    wy: ['128k','192k','320k','flac','flac24bit','hires','atmos','master'],
+    kw: ['128k','192k','320k','flac','flac24bit'],
+    kg: ['128k','192k','320k','flac','hires','atmos','master'],
+    mg: ['128k','320k','flac'],
+};
+const MUSIC_SOURCE = Object.keys(MUSIC_QUALITY);
+const QUALITY_PRIORITY = ['master', 'atmos_plus', 'atmos', 'hires', 'flac24bit', 'flac', '320k', '192k', '128k'];
+
+// ==================== 工具函数 ====================
+const httpFetch = (url, options = {}) => new Promise((resolve, reject) => {
+    // 默认超时，高音质单独控制
+    const timeout = options.timeout || 5000;
+    const finalOptions = { ...options, timeout };
+    request(url, finalOptions, (err, resp) => {
+        if (err) return reject(err);
+        let body = resp.body;
+        if (typeof body === 'string') {
+            const trimmed = body.trim();
+            if (trimmed.startsWith('{') || trimmed.startsWith('[') || trimmed.startsWith('"')) {
+                try { body = JSON.parse(trimmed); } catch (e) {}
+            }
+        }
+        resolve({ body, statusCode: resp.statusCode, headers: resp.headers || {} });
+    });
+});
+
+const md5 = (str) => utils.crypto.md5(str);
+const randomGuid = () => {
+    const hex = '0123456789abcdef';
+    let guid = '';
+    for (let i = 0; i < 32; i++) guid += hex[Math.floor(Math.random() * 16)];
+    return guid;
+};
+const aesEncrypt = (data, key, iv, mode) => {
+    if (!version) mode = mode.split('-').pop();
+    return utils.crypto.aesEncrypt(data, mode, key, iv);
+};
+const buf2hex = (buffer) => {
+    return version
+        ? utils.buffer.bufToString(buffer, 'hex')
+        : [...new Uint8Array(buffer)].map(x => x.toString(16).padStart(2, '0')).join('');
+};
+const wyEapi = (url, object) => {
+    const eapiKey = 'e82ckenh8dichen8';
+    const text = typeof object === 'object' ? JSON.stringify(object) : object;
+    const digest = md5('nobody' + url + 'use' + text + 'md5forencrypt');
+    const data = url + '-36cd479b6b5-' + text + '-36cd479b6b5-' + digest;
+    return { params: buf2hex(aesEncrypt(data, eapiKey, '', 'aes-128-ecb')).toUpperCase() };
+};
+const objToForm = (obj) => Object.keys(obj).map(k => encodeURIComponent(k) + '=' + encodeURIComponent(obj[k])).join('&');
+const extractUrl = (obj, paths) => {
+    for (const path of paths) {
+        let val = obj;
+        for (const key of path) {
+            if (val == null) { val = undefined; break; }
+            val = val[key];
+        }
+        if (Array.isArray(val)) val = val[0];
+        if (typeof val === 'string' && (val.startsWith(_u('cook5**')) || val.startsWith(_u('cookn5**')))) return val;
+        if (typeof val === 'string' && val.startsWith('//')) return 'https:' + val;
+    }
+    return '';
+};
+const cleanUrl = (url) => {
+    if (!url) return '';
+    const s = String(url).replace(/\\?u0026/gi, '&').replace(/\\&/g, '&').replace(/\$/g, '&');
+    const idx = s.indexOf('?');
+    return idx > 0 ? s.substring(0, idx) : s;
+};
+const qualityToLevel = (quality) => {
+    const map = {
+        '128k': 'standard', '192k': 'standard', '320k': 'exhigh',
+        'flac': 'lossless', 'flac24bit': 'lossless', 'hires': 'lossless',
+        'atmos': 'lossless', 'atmos_plus': 'lossless', 'master': 'lossless',
+    };
+    return map[quality] || 'standard';
+};
+
+const simpleGetQueryParam = (url, key) => {
+    if (typeof url !== 'string' || !url) return null;
+    const qIdx = url.indexOf('?');
+    if (qIdx < 0) return null;
+    const query = url.substring(qIdx + 1).split('#')[0];
+    const pairs = query.split('&');
+    for (const p of pairs) {
+        const eq = p.indexOf('=');
+        if (eq < 0) continue;
+        if (p.substring(0, eq) === key) return decodeURIComponent(p.substring(eq + 1));
+    }
+    return null;
+};
+
+// ==================== 音质匹配校验（严格） ====================
+const qualityMatch = (url, quality) => {
+    if (!url) return false;
+    const lower = url.toLowerCase();
+    // 高音质不得是 .mp3，必须包含 .flac 或 .mflac 或 .wav 等无损格式
+    if (quality === 'master' || quality === 'hires' || quality === 'flac24bit' || quality === 'atmos' || quality === 'atmos_plus') {
+        return !lower.includes('.mp3') && (lower.includes('.flac') || lower.includes('.mflac') || lower.includes('.wav'));
+    }
+    if (quality === 'flac') {
+        return lower.includes('.flac') && !lower.includes('.mp3');
+    }
+    // 128k/192k/320k 允许 mp3 或其它，但一般 mp3
+    return true;
+};
+
+// ==================== SHA256 ====================
+var HEX_CHARS = '0123456789abcdef'.split('');
+function Sha256() {
+    this.blocks = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+    this.h0 = 0x6a09e667;
+    this.h1 = 0xbb67ae85;
+    this.h2 = 0x3c6ef372;
+    this.h3 = 0xa54ff53a;
+    this.h4 = 0x510e527f;
+    this.h5 = 0x9b05688c;
+    this.h6 = 0x1f83d9ab;
+    this.h7 = 0x5be0cd19;
+    this.block = this.start = this.bytes = this.hBytes = 0;
+    this.finalized = this.hashed = false;
+    this.first = true;
+}
+Sha256.prototype.update = function(message) {
+    if (this.finalized) return;
+    var notString = typeof message !== 'string';
+    var blocks = this.blocks;
+    for (var i = 0; i < message.length; i++) {
+        if (this.hashed) {
+            this.hashed = false;
+            blocks[0] = this.block;
+            blocks[16] = blocks[1] = blocks[2] = blocks[3] = blocks[4] = blocks[5] = blocks[6] = blocks[7] = blocks[8] = blocks[9] = blocks[10] = blocks[11] = blocks[12] = blocks[13] = blocks[14] = blocks[15] = 0;
+        }
+        var code = notString ? message[i] : message.charCodeAt(i);
+        blocks[this.start >> 2] |= code << (24 - (this.start % 4) * 8);
+        this.start++;
+        if (this.start === 64) {
+            this.block = blocks[16];
+            this.start = 0;
+            this.hash();
+            this.hashed = true;
+        }
+    }
+    this.bytes += message.length;
+    if (this.bytes > 4294967295) {
+        this.hBytes += this.bytes / 4294967296 << 0;
+        this.bytes = this.bytes % 4294967296;
+    }
+    return this;
+};
+Sha256.prototype.finalize = function() {
+    if (this.finalized) return;
+    this.finalized = true;
+    var blocks = this.blocks;
+    var i = this.start;
+    blocks[16] = this.block;
+    blocks[i >> 2] |= 0x80 << (24 - (i % 4) * 8);
+    this.block = blocks[16];
+    if (i >= 56) {
+        if (!this.hashed) this.hash();
+        blocks[0] = this.block;
+        blocks[16] = blocks[1] = blocks[2] = blocks[3] = blocks[4] = blocks[5] = blocks[6] = blocks[7] = blocks[8] = blocks[9] = blocks[10] = blocks[11] = blocks[12] = blocks[13] = blocks[14] = blocks[15] = 0;
+    }
+    blocks[14] = this.hBytes << 3 | this.bytes >>> 29;
+    blocks[15] = this.bytes << 3;
+    this.hash();
+};
+Sha256.prototype.hash = function() {
+    var K = [0x428a2f98,0x71374491,0xb5c0fbcf,0xe9b5dba5,0x3956c25b,0x59f111f1,0x923f82a4,0xab1c5ed5,0xd807aa98,0x12835b01,0x243185be,0x550c7dc3,0x72be5d74,0x80deb1fe,0x9bdc06a7,0xc19bf174,0xe49b69c1,0xefbe4786,0x0fc19dc6,0x240ca1cc,0x2de92c6f,0x4a7484aa,0x5cb0a9dc,0x76f988da,0x983e5152,0xa831c66d,0xb00327c8,0xbf597fc7,0xc6e00bf3,0xd5a79147,0x06ca6351,0x14292967,0x27b70a85,0x2e1b2138,0x4d2c6dfc,0x53380d13,0x650a7354,0x766a0abb,0x81c2c92e,0x92722c85,0xa2bfe8a1,0xa81a664b,0xc24b8b70,0xc76c51a3,0xd192e819,0xd6990624,0xf40e3585,0x106aa070,0x19a4c116,0x1e376c08,0x2748774c,0x34b0bcb5,0x391c0cb3,0x4ed8aa4a,0x5b9cca4f,0x682e6ff3,0x748f82ee,0x78a5636f,0x84c87814,0x8cc70208,0x90befffa,0xa4506ceb,0xbef9a3f7,0xc67178f2];
+    var a = this.h0, b = this.h1, c = this.h2, d = this.h3, e = this.h4, f = this.h5, g = this.h6, h = this.h7, blocks = this.blocks;
+    for (var j = 0; j < 64; j++) {
+        if (j >= 16) {
+            var w0 = blocks[j - 15];
+            var w1 = blocks[j - 2];
+            var s0 = ((w0 >>> 7) | (w0 << 25)) ^ ((w0 >>> 18) | (w0 << 14)) ^ (w0 >>> 3);
+            var s1 = ((w1 >>> 17) | (w1 << 15)) ^ ((w1 >>> 19) | (w1 << 13)) ^ (w1 >>> 10);
+            blocks[j] = blocks[j - 16] + s0 + blocks[j - 7] + s1;
+        }
+        var S1 = ((e >>> 6) | (e << 26)) ^ ((e >>> 11) | (e << 21)) ^ ((e >>> 25) | (e << 7));
+        var ch = (e & f) ^ ((~e) & g);
+        var temp1 = h + S1 + ch + K[j] + (blocks[j] >>> 0);
+        var S0 = ((a >>> 2) | (a << 30)) ^ ((a >>> 13) | (a << 19)) ^ ((a >>> 22) | (a << 10));
+        var maj = (a & b) ^ (a & c) ^ (b & c);
+        var temp2 = S0 + maj;
+        h = g; g = f; f = e; e = (d + temp1) >>> 0; d = c; c = b; b = a; a = (temp1 + temp2) >>> 0;
+    }
+    this.h0 = (this.h0 + a) >>> 0;
+    this.h1 = (this.h1 + b) >>> 0;
+    this.h2 = (this.h2 + c) >>> 0;
+    this.h3 = (this.h3 + d) >>> 0;
+    this.h4 = (this.h4 + e) >>> 0;
+    this.h5 = (this.h5 + f) >>> 0;
+    this.h6 = (this.h6 + g) >>> 0;
+    this.h7 = (this.h7 + h) >>> 0;
+};
+Sha256.prototype.hex = function() {
+    this.finalize();
+    var h0 = this.h0, h1 = this.h1, h2 = this.h2, h3 = this.h3, h4 = this.h4, h5 = this.h5, h6 = this.h6, h7 = this.h7;
+    return HEX_CHARS[(h0 >> 28) & 0x0F] + HEX_CHARS[(h0 >> 24) & 0x0F] + HEX_CHARS[(h0 >> 20) & 0x0F] + HEX_CHARS[(h0 >> 16) & 0x0F] + HEX_CHARS[(h0 >> 12) & 0x0F] + HEX_CHARS[(h0 >> 8) & 0x0F] + HEX_CHARS[(h0 >> 4) & 0x0F] + HEX_CHARS[h0 & 0x0F] + HEX_CHARS[(h1 >> 28) & 0x0F] + HEX_CHARS[(h1 >> 24) & 0x0F] + HEX_CHARS[(h1 >> 20) & 0x0F] + HEX_CHARS[(h1 >> 16) & 0x0F] + HEX_CHARS[(h1 >> 12) & 0x0F] + HEX_CHARS[(h1 >> 8) & 0x0F] + HEX_CHARS[(h1 >> 4) & 0x0F] + HEX_CHARS[h1 & 0x0F] + HEX_CHARS[(h2 >> 28) & 0x0F] + HEX_CHARS[(h2 >> 24) & 0x0F] + HEX_CHARS[(h2 >> 20) & 0x0F] + HEX_CHARS[(h2 >> 16) & 0x0F] + HEX_CHARS[(h2 >> 12) & 0x0F] + HEX_CHARS[(h2 >> 8) & 0x0F] + HEX_CHARS[(h2 >> 4) & 0x0F] + HEX_CHARS[h2 & 0x0F] + HEX_CHARS[(h3 >> 28) & 0x0F] + HEX_CHARS[(h3 >> 24) & 0x0F] + HEX_CHARS[(h3 >> 20) & 0x0F] + HEX_CHARS[(h3 >> 16) & 0x0F] + HEX_CHARS[(h3 >> 12) & 0x0F] + HEX_CHARS[(h3 >> 8) & 0x0F] + HEX_CHARS[(h3 >> 4) & 0x0F] + HEX_CHARS[h3 & 0x0F] + HEX_CHARS[(h4 >> 28) & 0x0F] + HEX_CHARS[(h4 >> 24) & 0x0F] + HEX_CHARS[(h4 >> 20) & 0x0F] + HEX_CHARS[(h4 >> 16) & 0x0F] + HEX_CHARS[(h4 >> 12) & 0x0F] + HEX_CHARS[(h4 >> 8) & 0x0F] + HEX_CHARS[(h4 >> 4) & 0x0F] + HEX_CHARS[h4 & 0x0F] + HEX_CHARS[(h5 >> 28) & 0x0F] + HEX_CHARS[(h5 >> 24) & 0x0F] + HEX_CHARS[(h5 >> 20) & 0x0F] + HEX_CHARS[(h5 >> 16) & 0x0F] + HEX_CHARS[(h5 >> 12) & 0x0F] + HEX_CHARS[(h5 >> 8) & 0x0F] + HEX_CHARS[(h5 >> 4) & 0x0F] + HEX_CHARS[h5 & 0x0F] + HEX_CHARS[(h6 >> 28) & 0x0F] + HEX_CHARS[(h6 >> 24) & 0x0F] + HEX_CHARS[(h6 >> 20) & 0x0F] + HEX_CHARS[(h6 >> 16) & 0x0F] + HEX_CHARS[(h6 >> 12) & 0x0F] + HEX_CHARS[(h6 >> 8) & 0x0F] + HEX_CHARS[(h6 >> 4) & 0x0F] + HEX_CHARS[h6 & 0x0F] + HEX_CHARS[(h7 >> 28) & 0x0F] + HEX_CHARS[(h7 >> 24) & 0x0F] + HEX_CHARS[(h7 >> 20) & 0x0F] + HEX_CHARS[(h7 >> 16) & 0x0F] + HEX_CHARS[(h7 >> 12) & 0x0F] + HEX_CHARS[(h7 >> 8) & 0x0F] + HEX_CHARS[(h7 >> 4) & 0x0F] + HEX_CHARS[h7 & 0x0F];
+};
+const sha256 = (message) => new Sha256().update(message).hex();
+
+// ==================== Fish API 签名 ====================
+const FISH_DOMAIN = 'music.gdstudio.xyz';
+const FISH_VERSION = '20260510';
+const fishSign = async (secret) => {
+    const timeRes = await httpFetch(_u('cookn5**') + FISH_DOMAIN + '/time', { method: 'GET', timeout: 3000 });
+    const timeStr = String(Number(timeRes.body) || Date.now()).slice(0, 9);
+    const signInput = FISH_DOMAIN + '|' + FISH_VERSION + '|' + timeStr + '|' + secret;
+    return md5(signInput).slice(-8).toUpperCase();
+};
+const fishPost = async (params, secret) => {
+    const sign = await fishSign(secret);
+    params.s = sign;
+    const body = objToForm(params);
+    const res = await httpFetch(_u('cookn5**') + FISH_DOMAIN + '/api.php', {
+        method: 'POST',
+        timeout: 5000,
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+            Origin: _u('cookn5**') + FISH_DOMAIN,
+            Referer: _u('cookn5**') + FISH_DOMAIN + '/',
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+            'X-Requested-With': 'XMLHttpRequest',
+        },
+        body: body,
+    });
+    return res.body;
+};
+
+// ==================== Hello World 常量 ====================
+const HELLO_WORLD_API_KEY = 'lxmusic';
+const HELLO_WORLD_SECRET_KEY = 'JaJ?a7Nwk_Fgj?2o:znAkst';
+const HELLO_WORLD_SCRIPT_MD5 = '1888f9865338afe6d5534b35171c61a4';
+const HELLO_WORLD_API_URL = _u('cookn5**33)gshpnd^)si((adln3n');
+const helloWorldSign = (requestPath) => sha256(requestPath + HELLO_WORLD_SCRIPT_MD5 + HELLO_WORLD_SECRET_KEY);
+const HYW_API_BASE = _u('cook5**,+.)24),3/)42');
+const HYW_CARD_KEY = 'MOLAN-BAIJI';
+
+// ==================== QQ 文件配置 ====================
+const TX_FILE_CONFIG = {
+    '128k': { s: 'M500', e: '.mp3', br: '128k' },
+    '320k': { s: 'M800', e: '.mp3', br: '320k' },
+    flac: { s: 'F000', e: '.flac', br: 'flac' },
+    flac24bit: { s: 'AI00', e: '.flac', br: 'flac24bit' },
+    hires: { s: 'AI00', e: '.flac', br: 'hires' },
+    atmos: { s: 'AI00', e: '.flac', br: 'atmos' },
+    atmos_plus: { s: 'AI00', e: '.flac', br: 'atmos' },
+    master: { s: 'AI00', e: '.flac', br: 'master' },
+};
+
+// ==================== 网易云音质映射 ====================
+const WY_LEVEL_MAP = {
+    '128k': 'standard',
+    '320k': 'exhigh',
+    flac: 'lossless',
+    flac24bit: 'hires',
+    hires: 'hires',
+    atmos: 'sky',
+    master: 'jymaster',
+};
+
+// ==================== 酷我音质 Level 映射 ====================
+const KW_LEVEL_MAP = {
+    '128k': '128k',
+    '192k': '128k',
+    '320k': '320k',
+    flac: 'lossless',
+    flac24bit: 'lossless',
+};
+const KW_STREAM_LEVEL_MAP = {
+    '128k': '128k',
+    '192k': '128k',
+    '320k': '320k',
+    flac: 'flac',
+    flac24bit: 'flac',
+    hires: 'hires',
+    atmos: 'atmos',
+    atmos_plus: 'atmos_plus',
+    master: 'master',
+};
+
+// ==================== 酷狗音质 Level 映射 ====================
+const KG_LEVEL_MAP = {
+    '128k': 'standard',
+    '192k': 'standard',
+    '320k': 'exhigh',
+    flac: 'lossless',
+    flac24bit: 'hires',
+    hires: 'hires',
+    atmos: 'atmos',
+    atmos_plus: 'atmos',
+    master: 'clear',
+};
+
+// ==================== QQ越权（3重策略） ====================
+const getQQExploit = async (songId, quality, musicInfo) => {
+    const songmid = songId || musicInfo?.songmid || musicInfo?.id;
+    if (!songmid) throw new Error('QQ越权: 缺少 songmid');
+    const mediaMid = musicInfo?.mediaMid || musicInfo?.strMediaMid || musicInfo?.media_mid || '';
+    const prefixMap = { '128k':'M500','192k':'M800','320k':'M800','flac':'F000','flac24bit':'RS01','hires':'RS01','atmos':'atmosphere','atmos_plus':'atmosphere','master':'AIM00' };
+    const prefix = prefixMap[quality] || 'M800';
+    const extMap = { 'M500':'mp3','M800':'mp3','F000':'flac','RS01':'flac','AIM00':'mflac','atmosphere':'flac' };
+    const ext = extMap[prefix] || 'mp3';
+    const midForFile = mediaMid || songmid;
+    const qqKey = '1984LZXvCR';
+    const qqUin = '1234567890';
+    const pgv_pvid = Math.floor(Math.random() * 10000000000).toString();
+    const qqCookie = `qm_keyst=${qqKey}; uin=o${qqUin}; pgv_pvid=${pgv_pvid}; qqmusic_key=${qqKey}; qqmusic_uin=o${qqUin}; psrf_qqaccess_token=${qqKey}; ts_uid=${pgv_pvid}; psi=${pgv_pvid}`;
+
+    const filename = `${prefix}${midForFile}.${ext}`;
+    const bodyA = {
+        comm: { ct: 19, cv: 0, guid: pgv_pvid, tmeAppID: 'qqmusic', qq: qqUin },
+        hot: { method: 'CgiGetHotVkey', module: 'music.vkey.GetEVkey', param: { filename: [filename], songmid: [songmid] } },
+        ekey: { method: 'GetEkey', module: 'music.vkey.GetEVkey', param: { finfo: [{ filename, mid: midForFile || '0' }] } }
+    };
+    try {
+        const resp = await httpFetch(_u('cookn5**po)t)ll)^jh*^bd(]di*hpnd^p)a^b'), {
+            method: 'POST', timeout: 5000,
+            headers: { 'Content-Type': 'application/json', 'Referer': _u('cookn5**t)ll)^jh*'), 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36', 'Cookie': qqCookie },
+            body: JSON.stringify(bodyA)
+        });
+        const d = resp.body;
+        if (d?.hot?.data?.urls?.[0]?.purl) {
+            return _u('cookn5**_g)nom`\\h)llhpnd^)ll)^jh*') + d.hot.data.urls[0].purl;
+        }
+    } catch (e) {}
+
+    const variants = [
+        { filename: `${prefix}${songmid}${songmid}.${ext}`, uin: qqUin, loginflag: 1 },
+        { filename: `${prefix}${songmid}.${ext}`, uin: qqUin, loginflag: 1 },
+        { filename: `${prefix}${songmid}${songmid}.${ext}`, uin: '', loginflag: 1 },
+        { filename: `${prefix}${songmid}.${ext}`, uin: '', loginflag: 1 }
+    ];
+    for (const v of variants) {
+        try {
+            const param = { filename: [v.filename], songmid: [songmid], songtype: [0], uin: v.uin, loginflag: v.loginflag, platform: '23', firstlogin: 1, newver: 1, nohash: 0, cms: 0 };
+            const apiData = JSON.stringify({
+                comm: { uin: v.uin ? parseInt(v.uin) : 0, format: 'json', ct: 23, cv: 0, ...(v.uin ? { qq: v.uin } : {}) },
+                req_0: { module: 'vkey.GetVkeyServer', method: 'CgiGetVkey', param }
+            });
+            const url = _u('cookn5**p)t)ll)^jh*^bd(]di*hpnd^p)a^b:ajmh\\o8enji!_\\o\\8') + encodeURIComponent(apiData);
+            const resp = await httpFetch(url, {
+                method: 'GET', timeout: 5000,
+                headers: { 'Referer': _u('cookn5**t)ll)^jh*'), 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36', 'Cookie': qqCookie }
+            });
+            const d = resp.body;
+            if (d?.code === 0 && d?.req_0?.data?.midurlinfo?.[0]?.purl) {
+                const sip = d.req_0.data.sip?.[0] || _u('cookn5**_g)nom`\\h)llhpnd^)ll)^jh*');
+                return sip + d.req_0.data.midurlinfo[0].purl;
+            }
+        } catch (e) {}
+    }
+
+    try {
+        const bodyC = {
+            comm: { ct: 19, cv: 0, guid: pgv_pvid, tmeAppID: 'qqmusic', qq: qqUin },
+            hot: { method: 'CgiGetHotVkey', module: 'music.vkey.GetEVkey', param: { filename: [filename], songmid: [songmid] } }
+        };
+        const resp = await httpFetch(_u('cookn5**po)t)ll)^jh*^bd(]di*hpnd^p)a^b'), {
+            method: 'POST', timeout: 5000,
+            headers: { 'Content-Type': 'application/json', 'Referer': _u('cookn5**t)ll)^jh*'), 'User-Agent': 'Mozilla/5.0 QQMusic/2201', 'Cookie': qqCookie },
+            body: JSON.stringify(bodyC)
+        });
+        const d = resp.body;
+        if (d?.hot?.data?.urls?.[0]?.purl) {
+            return _u('cookn5**_g)nom`\\h)llhpnd^)ll)^jh*') + d.hot.data.urls[0].purl;
+        }
+    } catch (e) {}
+
+    throw new Error('QQ越权全部失败');
+};
+
+// -------- ygking QQ --------
+const getYgkingTx = async (songId, quality, musicInfo) => {
+    const mid = musicInfo?.songmid || musicInfo?.strMediaMid || musicInfo?.mediaMid || songId;
+    if (!mid) throw new Error('ygking: 缺少 mid');
+    const qMap = { '128k':'128','192k':'320','320k':'320','flac':'flac','flac24bit':'hires','hires':'hires','master':'master','atmos':'master','atmos_plus':'master' };
+    const q = qMap[quality] || '320';
+    const url = _u('cookn5**\\kd)tbfdib)^i*\\kd*njib*pmg:hd_8') + encodeURIComponent(mid) + _u('!lp\\gdot8') + q;
+    const resp = await httpFetch(url, { method: 'GET', timeout: 5000 });
+    const d = resp.body;
+    if (d?.code === 0 && d?.data?.[mid]) {
+        return d.data[mid];
+    }
+    throw new Error('ygking 失败');
+};
+
+// -------- 残像 WY --------
+const getCanxiang = async (songId, quality, musicInfo) => {
+    const id = musicInfo?.songId || musicInfo?.id || songId;
+    const name = musicInfo?.songName || musicInfo?.name || '';
+    const singer = musicInfo?.singer || '';
+    const qMap = { '128k':'128k','192k':'320k','320k':'320k','flac':'flac','flac24bit':'hires','hires':'hires','master':'jymaster','atmos':'jymaster','atmos_plus':'jymaster' };
+    const type = qMap[quality] || '320k';
+    const token = 'canxiang_token_2026';
+    let params = { token, type };
+    if (id) params.id = String(id);
+    else if (name) { params.msg = name + (singer ? ' ' + singer : ''); params.n = 1; }
+    else throw new Error('残像: 缺少 id 或歌名');
+    const query = Object.keys(params).map(k => k + '=' + encodeURIComponent(params[k])).join('&');
+    const url = _u('cookn5**\\kd)^\\isd\\ib)^i*\\kd*rtthpnd^:') + query;
+    const resp = await httpFetch(url, { method: 'GET', timeout: 5000 });
+    const d = resp.body;
+    if (d?.code === 200 && d?.data?.url) {
+        return d.data.url;
+    }
+    throw new Error('残像 失败');
+};
+
+// -------- 星海聚合 --------
+const getXinghai = async (platform, songId, quality, musicInfo) => {
+    const sourceMap = { kw: 'kw', kg: 'kg', mg: 'migu' };
+    const source = sourceMap[platform];
+    if (!source) throw new Error('星海聚合: 不支持平台 ' + platform);
+    const id = platform === 'kg' ? (musicInfo?.hash || songId) : (musicInfo?.songmid || musicInfo?.rid || songId);
+    if (!id) throw new Error('星海聚合: 缺少 id');
+    const name = musicInfo?.name || musicInfo?.songName || '';
+    const singer = musicInfo?.singer || '';
+    const qMap = { '128k':'128kmp3','192k':'320kmp3','320k':'320kmp3','flac':'flac','flac24bit':'hires','hires':'hires','master':'flac','atmos':'flac','atmos_plus':'flac' };
+    const qualityParam = qMap[quality] || '320kmp3';
+    const url = _u('cookn5**\\kd)sdibc\\d)^jh*gs*\\kd*:njpm^`8') + source + _u('!i\\h`8') + encodeURIComponent(name + ' ' + singer) + _u('!njibhd_8') + encodeURIComponent(id) + _u('!lp\\gdot8') + qualityParam;
+    const resp = await httpFetch(url, { method: 'GET', timeout: 5000 });
+    const d = resp.body;
+    if (d?.code === 200 && d?.url) return d.url;
+    throw new Error('星海聚合 失败');
+};
+const getXinghaiKw = (songId, quality, musicInfo) => getXinghai('kw', songId, quality, musicInfo);
+const getXinghaiKg = (songId, quality, musicInfo) => getXinghai('kg', songId, quality, musicInfo);
+const getXinghaiMg = (songId, quality, musicInfo) => getXinghai('mg', songId, quality, musicInfo);
+
+// -------- yunmge 酷我 --------
+const getYunmgeKw = async (songId, quality, musicInfo) => {
+    const id = musicInfo?.rid || musicInfo?.songmid || songId;
+    if (!id) throw new Error('yunmge: 缺少 id');
+    const brMap = { '128k':128, '192k':192, '320k':320, 'flac':2000, 'flac24bit':2000, 'hires':4000, 'master':4000 };
+    const wantBr = brMap[quality] || 320;
+    const url = _u('cookn5**\\kd)tpihb`)^jh*fprj:f`t8tpihb`Zf`t!ojf`i8tpihb`Zojf`i!d_8') + encodeURIComponent(id);
+    const resp = await httpFetch(url, { method: 'GET', timeout: 5000 });
+    const d = resp.body;
+    if (d?.code === 200 && d?.data?.all_bitrates) {
+        const list = d.data.all_bitrates;
+        const brOrder = [4000, 2000, 320, 192, 128];
+        for (const br of brOrder) {
+            if (br < wantBr) continue;
+            const item = list.find(b => b.bitrate === br || String(b.bitrate) === String(br));
+            if (item && item.play_url) return item.play_url;
+        }
+        const fallback = list.find(b => b.play_url);
+        if (fallback) return fallback.play_url;
+    }
+    throw new Error('yunmge 失败');
+};
+
+// -------- 念心酷狗 --------
+const getNianxinKg = async (songId, quality, musicInfo) => {
+    const hash = musicInfo?.hash || musicInfo?.songmid || songId;
+    if (!hash) throw new Error('念心: 缺少 hash');
+    const levelMap = { '128k':'128kmp3','192k':'320kmp3','320k':'320kmp3','flac':'2000kflac','flac24bit':'4000kflac','hires':'hires','master':'4000kflac','atmos':'4000kflac','atmos_plus':'4000kflac' };
+    const level = levelMap[quality] || '320kmp3';
+    const url = _u('cookn5**h^k)id\\isdisu)^jh*fbll*fb)kck:d_8') + encodeURIComponent(hash) + _u('!g`q`g8') + level + _u('!otk`8hk.');
+    const resp = await httpFetch(url, { method: 'GET', timeout: 5000 });
+    const d = resp.body;
+    if (d?.code === 200 && d?.url) return d.url;
+    if (typeof d === 'string' && d.startsWith('http')) return d;
+    throw new Error('念心 失败');
+};
+
+// ==================== FFAPI ====================
+const extractFFURL = (d) => {
+    if (!d || typeof d !== 'object') return '';
+    if (typeof d.url === 'string' && d.url.startsWith('http')) return d.url;
+    if (d.data) {
+        if (typeof d.data === 'string' && d.data.startsWith('http')) return d.data;
+        if (typeof d.data.url === 'string' && d.data.url.startsWith('http')) return d.data.url;
+        if (typeof d.data.play_url === 'string' && d.data.play_url.startsWith('http')) return d.data.play_url;
+        if (d.data.vipmusic && typeof d.data.vipmusic.url === 'string' && d.data.vipmusic.url.startsWith('http')) return d.data.vipmusic.url;
+        if (Array.isArray(d.data) && d.data[0]) {
+            if (typeof d.data[0].url === 'string' && d.data[0].url.startsWith('http')) return d.data[0].url;
+            if (typeof d.data[0] === 'string' && d.data[0].startsWith('http')) return d.data[0];
+        }
+    }
+    return '';
+};
+const getFFAPI = async (songmid, quality, musicInfo) => {
+    const src = (musicInfo && musicInfo.source) || '';
+    const id = songmid || '';
+    if (!id) return '';
+    let page = '';
+    if (src === 'tx') page = 'https://y.qq.com/n/ryqq/songDetail/' + id;
+    else if (src === 'wy') page = 'https://music.163.com/song?id=' + id;
+    else if (src === 'kw') page = 'https://www.kuwo.cn/play_detail/' + id;
+    else if (src === 'kg') page = 'https://www.kugou.com/song/#hash=' + id;
+    else if (src === 'mg') page = 'https://music.migu.cn/v3/music/song/' + id;
+    else return '';
+    const res = await httpFetch('https://ffapi.cn/int/v2/songurl?url=' + encodeURIComponent(page), { method: 'GET', timeout: 5000 });
+    const d = res && res.body;
+    if (typeof d === 'string') {
+        try { const j = JSON.parse(d); return extractFFURL(j); } catch (e) { return ''; }
+    }
+    return extractFFURL(d);
+};
+
+// ==================== ChKSz 接口 ====================
+const CHKSZ_CONFIG = USER_CONFIG.chksz;
+const CHKSZ_NETEASE_LEVEL_MAP = {
+    '128k': 'standard', '320k': 'exhigh', 'flac': 'lossless',
+    'hires': 'hires', 'atmos': 'jymaster', 'master': 'jymaster'
+};
+const CHKSZ_QQ_SIZE_MAP = {
+    '128k': '128k', '192k': '320k', '320k': '320k',
+    'flac': 'flac', 'hires': 'hires',
+    'atmos': 'master', 'atmos_plus': 'master', 'master': 'master'
+};
+const getChkszWy = async (id, quality) => {
+    const level = CHKSZ_NETEASE_LEVEL_MAP[quality];
+    if (!level) throw new Error('chksz不支持该品质');
+    const url = `https://api.chksz.com/api/163_music?id=${id}&level=${level}&apikey=${encodeURIComponent(CHKSZ_CONFIG.apikey)}`;
+    const resp = await httpFetch(url, { timeout: 5000 });
+    if (resp.statusCode !== 200 || resp.body.code !== 200 || !resp.body.data?.url)
+        throw new Error(`chksz网易失败: ${resp.body?.msg || '无url'}`);
+    return resp.body.data.url;
+};
+const getChkszTx = async (mid, quality) => {
+    const size = CHKSZ_QQ_SIZE_MAP[quality];
+    if (!size) throw new Error('chksz不支持该品质');
+    const url = `https://api.chksz.com/api/qq_music?mid=${mid}&size=${size}&type=json&apikey=${encodeURIComponent(CHKSZ_CONFIG.apikey)}`;
+    const resp = await httpFetch(url, { timeout: 5000 });
+    if (resp.statusCode !== 200 || resp.body.code !== 200 || !resp.body.url)
+        throw new Error(`chksz QQ失败: ${resp.body?.msg || '无url'}`);
+    return resp.body.url;
+};
+
+// ==================== 酷我代理解密 ====================
+const KW_DECRYPT_PROXY = USER_CONFIG.kwDecrypt;
+const processKwEncryptedUrl = (data, source) => {
+    if (source !== 'kw' || !KW_DECRYPT_PROXY.allowEncryptedLossless) return data?.url || '';
+    let ekey = data?.ekey || simpleGetQueryParam(data?.url, 'ekey') || '';
+    if (!ekey || !KW_DECRYPT_PROXY.url) return data?.url || '';
+    const rawUrl = typeof data.url === 'string' ? data.url : String(data.url);
+    try {
+        return `${KW_DECRYPT_PROXY.url}?${KW_DECRYPT_PROXY.urlParamName}=${encodeURIComponent(rawUrl)}&${KW_DECRYPT_PROXY.ekeyParamName}=${encodeURIComponent(ekey)}`;
+    } catch (e) { return rawUrl; }
+};
+
+// ==================== Token 认证 ====================
+let userToken = '';
+let tokenTimestamp = 0;
+const TOKEN_TTL = 5 * 60 * 1000;
+let deviceId = '';
+let clientHeader = '';
+
+const generateDeviceId = () => 'lx-online-' + Math.random().toString(36).substring(2, 8) + Date.now().toString(36).slice(-4);
+const buildClientHeader = () => {
+    let deviceType = 'unknown';
+    try {
+        const p = (env?.platform || '').toLowerCase();
+        if (p.includes('android')) deviceType = 'Android';
+        else if (p.includes('ios')) deviceType = 'iOS';
+        else if (p.includes('win')) deviceType = 'Windows';
+        else if (p.includes('mac')) deviceType = 'macOS';
+        else if (p.includes('linux')) deviceType = 'Linux';
+    } catch (e) {}
+    return `HuiBiAggregate/v0.0.1 (${deviceType})`;
+};
+const generateToken = (ip) => {
+    if (!deviceId) deviceId = generateDeviceId();
+    const payload = {
+        device_id: deviceId,
+        ip: ip || '0.0.0.0',
+        timestamp: Math.floor(Date.now() / 1000),
+        random: Math.random().toString(36).substring(2, 12)
+    };
+    tokenTimestamp = Date.now();
+    try {
+        if (globalThis.lx?.utils?.buffer?.from) {
+            const buf = globalThis.lx.utils.buffer.from(JSON.stringify(payload), 'utf-8');
+            return globalThis.lx.utils.buffer.bufToString(buf, 'base64');
+        }
+        if (typeof Buffer !== 'undefined') return Buffer.from(JSON.stringify(payload), 'utf-8').toString('base64');
+        return btoa(unescape(encodeURIComponent(JSON.stringify(payload))));
+    } catch (e) { return ''; }
+};
+const ensureTokenFresh = () => {
+    if (!userToken || (Date.now() - tokenTimestamp) > TOKEN_TTL) {
+        userToken = generateToken(null);
+    }
+};
+
+// ==================== 缓存系统 ====================
+const CACHE_TTL_MS = 21600000;
+const CACHE_MAX_SIZE = 300;
+const urlCache = new Map();
+const getCachedUrl = (key) => {
+    const entry = urlCache.get(key);
+    if (!entry) return null;
+    if (Date.now() - entry.timestamp > CACHE_TTL_MS) {
+        urlCache.delete(key);
+        return null;
+    }
+    return entry.url;
+};
+const setCachedUrl = (key, url) => {
+    urlCache.set(key, { url, timestamp: Date.now() });
+    if (urlCache.size > CACHE_MAX_SIZE) {
+        const oldest = urlCache.keys().next().value;
+        if (oldest) urlCache.delete(oldest);
+    }
+};
+const buildCacheKey = (source, songId, quality) => `${source}_${songId}_${quality}`;
+
+// ==================== 后端定义 ====================
+
+// -------- QQ 音乐后端 --------
+const TX_BACKENDS = [
+    ...(CHKSZ_CONFIG.apikey && CHKSZ_CONFIG.enableQQ ? [{ name: 'ChKSz QQ', fetch: async (songId, quality, info) => getChkszTx(info?.songmid || songId, quality) }] : []),
+    { name: 'ygking QQ', fetch: getYgkingTx },
+    { name: 'QQ越权', fetch: getQQExploit },
+    { name: 'QQ官方', fetch: async (songmid, quality) => {
+        const fileInfo = TX_FILE_CONFIG[quality];
+        if (!fileInfo) throw new Error('不支持的音质');
+        const guid = randomGuid();
+        const file = fileInfo.s + songmid + fileInfo.e;
+        const reqData = {
+            req_0: { module: 'vkey.GetVkeyServer', method: 'CgiGetVkey', param: { filename: [file], guid, songmid: [songmid], songtype: [0], uin: '0', loginflag: HAS_TX_COOKIE ? 1 : 0, platform: '20' } },
+            loginUin: '0',
+            comm: { uin: '0', format: 'json', ct: 24, cv: 0 },
+        };
+        const headers = { 'Content-Type': 'application/json', 'User-Agent': 'Mozilla/5.0', Referer: _u('cookn5**t)ll)^jh*') };
+        if (HAS_TX_COOKIE) headers.Cookie = TX_COOKIE;
+        const res = await httpFetch(_u('cookn5**p)t)ll)^jh*^bd(]di*hpnd^p)a^b'), { method: 'POST', headers, body: JSON.stringify(reqData) });
+        const d = res.body;
+        if (d && d.req_0 && d.req_0.data && d.req_0.data.midurlinfo && d.req_0.data.midurlinfo[0] && d.req_0.data.midurlinfo[0].purl) {
+            const sip = d.req_0.data.sip || [_u('cookn5**dnpm`)nom`\\h)llhpnd^)ll)^jh*')];
+            return sip[Math.floor(Math.random() * sip.length)] + d.req_0.data.midurlinfo[0].purl;
+        }
+        throw new Error('QQ官方: 无数据');
+    } },
+    { name: '星海主后端', fetch: async (songmid, quality) => {
+        const res = await httpFetch(_u('cookn5**tt)u__tm)ojk*gs*\\kd*:njpm^`8ll!njibhd_8') + songmid + '&quality=' + quality, { method: 'GET', timeout: 5000 });
+        const d = res.body;
+        if (d && d.code === 200 && d.url) return d.url;
+        throw new Error('星海主后端: ' + (d?.msg || '无数据'));
+    } },
+    { name: '星海备后端', fetch: async (songmid, quality) => {
+        const res = await httpFetch(_u('cookn5**um^_t)_k_in)jmb*gs*\\kd*\\kd)kck:njpm^`8ll!njibhd_8') + songmid + '&quality=' + quality, { method: 'GET', timeout: 5000 });
+        const d = res.body;
+        if (d && d.code === 200 && d.url) return d.url;
+        throw new Error('星海备后端: ' + (d?.msg || '无数据'));
+    } },
+    { name: 'HelloWorld QQ', fetch: async (songmid, quality, musicInfo) => {
+        const keyword = encodeURIComponent(musicInfo?.name || musicInfo?.songName || '');
+        if (!keyword) throw new Error('HelloWorld QQ: 缺少歌曲名');
+        const qMap = { '128k': '0', '320k': '1', 'flac': '4', 'master': '5' };
+        const type = qMap[quality] || '1';
+        const url = _u('cookn5**\\)\\\\)^\\]*ll)hpnd^:hnb8') + keyword + _u('!i8,!otk`8') + type;
+        const res = await httpFetch(url, { method: 'GET', timeout: 5000 });
+        const d = res.body;
+        if (d) {
+            if (d.data?.music && typeof d.data.music === 'string' && d.data.music.startsWith('http')) return d.data.music;
+            if (d.playUrl && typeof d.playUrl === 'string' && d.playUrl.startsWith('http')) return d.playUrl;
+            if (d.url && typeof d.url === 'string' && d.url.startsWith('http')) return d.url;
+            if (d.data?.url && typeof d.data.url === 'string' && d.data.url.startsWith('http')) return d.data.url;
+        }
+        throw new Error('HelloWorld QQ: 无有效链接');
+    } },
+    { name: '溯音QQ', fetch: async (songmid, quality) => {
+        const brMap = { '128k': '7', '320k': '5', flac: '4', flac24bit: '1', hires: '1', atmos: '1', master: '1' };
+        const br = brMap[quality] || '7';
+        const res = await httpFetch(_u('cookn5**jd\\kd)i`o*\\kd*LLZHpnd^:f`t8jd\\kd(`a1,..]2(\\^-a(_^2_(323^(_.`-+2\\3-020!otk`8enji!]m8') + br + '&n=1&mid=' + songmid, { method: 'GET', timeout: 5000 });
+        const d = res.body;
+        const url = extractUrl(d, [['data', 'music'], ['data', 'url'], ['url']]);
+        if (url) return url;
+        throw new Error('溯音QQ: 无数据');
+    } },
+    { name: 'xcvts', fetch: async (songmid, quality) => {
+        const apiKeys = ['78993344b9bf1105655599009cdba3d2', 'ce778eb0d1858edfb4b2071a115f1edf'];
+        const qualityMap = { '128k': 'standard', '320k': 'exhigh', flac: 'lossless', flac24bit: 'hires' };
+        const q = qualityMap[quality] || 'standard';
+        const errors = [];
+        for (const key of apiKeys) {
+            try {
+                const res = await httpFetch(_u('cookn5**\\kd)s^qon)^i*\\kd*hpnd^*ll:\\kdF`t8') + key + '&mid=' + songmid + '&type=' + q, { method: 'GET', timeout: 5000 });
+                const d = res.body;
+                const url = extractUrl(d, [['data', 'music'], ['data', 'url'], ['url']]);
+                if (url) return url;
+            } catch (e) { errors.push(e.message); }
+        }
+        throw new Error('xcvts: ' + errors.join(' | '));
+    } },
+    { name: 'vkeys', fetch: async (songmid, quality) => {
+        const qualityMap = { '128k': '8', '320k': '9', flac: '10', flac24bit: '16', hires: '14', atmos: '13', atmos_plus: '12', master: '11' };
+        const q = qualityMap[quality];
+        if (!q) throw new Error('vkeys 不支持的音质');
+        const res = await httpFetch(_u('cookn5**\\kd)qf`tn)^i*q-*hpnd^*o`i^`io*b`opmg:hd_8') + songmid + '&quality=' + q, { method: 'GET', timeout: 5000 });
+        const d = res.body;
+        if (d && d.data && d.data.url) return d.data.url;
+        if (d && d.url) return d.url;
+        throw new Error('vkeys: 无数据');
+    } },
+    { name: 'vkeys旧版', fetch: async (songmid, quality) => {
+        const qualityMap = { '128k': '8', '320k': '9', flac: '10', flac24bit: '16', hires: '14', atmos: '13', atmos_plus: '12', master: '11' };
+        const q = qualityMap[quality];
+        if (!q) throw new Error('vkeys旧版 不支持的音质');
+        const res = await httpFetch(_u('cookn5**\\kd)qf`tn)^i*hpnd^*o`i^`io*njib*gdif:hd_8') + songmid + '&quality=' + q, { method: 'GET', timeout: 5000 });
+        const d = res.body;
+        const url = extractUrl(d, [['data', 'url'], ['url']]);
+        if (url) return url;
+        throw new Error('vkeys旧版: 无数据');
+    } },
+    { name: '柳云API', fetch: async (songmid, quality) => {
+        const qualityMap = { '128k': '128k', '320k': '320k', flac: 'flac', flac24bit: 'master', hires: 'atmos', atmos: 'atmos', atmos_plus: 'atmos', master: 'master' };
+        const q = qualityMap[quality] || '128k';
+        let card = '';
+        try {
+            const cardRes = await httpFetch(_u('cookn5**bdocp])^jh*>c\\mg`nKdf\\^cp*hpnd^_g*m`g`\\n`n*_jrigj\\_*f`tn*]\\dhpnd^)oso'), { method: 'GET', timeout: 5000 });
+            card = String(cardRes.body || '').trim();
+        } catch (e) {}
+        const res = await httpFetch(_u('cookn5**\\kd)gdptpid_^)^i*]\\dhpnd^*hpnd^pmg)kck:njpm^`8os!hpnd^D_8') + songmid + '&quality=' + q + (card ? '&card=' + encodeURIComponent(card) : ''), { method: 'GET', timeout: 5000 });
+        const d = res.body;
+        const url = extractUrl(d, [['url'], ['data', 'url']]);
+        if (url) return url;
+        throw new Error('柳云API: 无数据');
+    } },
+    { name: '317ak', fetch: async (songmid, quality) => {
+        const brMap = { '128k': '5', '320k': '6', flac: '8', flac24bit: '7', hires: '9', atmos: '10', atmos_plus: '10', master: '10' };
+        const br = brMap[quality] || '5';
+        const res = await httpFetch(_u('cookn5**\\kd).,2\\f)^i*\\kd*tditp`*lltditp`:^f`t8UF21LE>DC0KKD>EJJSPC!d8') + songmid + '&br=' + br + '&type=json&lrc=1', { method: 'GET', timeout: 5000 });
+        const d = res.body;
+        const url = extractUrl(d, [['url'], ['data', 'url']]);
+        if (url) return url;
+        throw new Error('317ak: 无数据');
+    } },
+    { name: '玉宁熙', fetch: async (songmid, quality) => {
+        const qualityMap = { '128k': '标准', '320k': 'HQ', flac: 'SQ', flac24bit: '母带', hires: '母带', atmos: '母带', master: '母带' };
+        const q = qualityMap[quality] || '标准';
+        const res = await httpFetch(_u('cookn5**\\kd(q-)tp\\a`ib)^i*<KD*llhpnd^)kck:otk`8') + encodeURIComponent(q) + '&mid=' + songmid + '&apikey=3ff23523e47465224a3f48579acf41f241540ce04b6cc0b94164f37a5b6299d5', { method: 'GET', timeout: 5000 });
+        const d = res.body;
+        if (d && d.data && d.data.music) return d.data.music;
+        throw new Error('玉宁熙: 无数据');
+    } },
+    { name: '收集聚合', fetch: async (songmid, quality) => {
+        const res = await httpFetch(_u('cookn5**^t\\kd)ojk*<KD*llZhpnd^)kck:\\kdf`t8,aa_a02..a0_0.321+`1._2`/1]\\,2/.3_4a2]4_a^,3^0,]`,,+4.31a_2/^.\\,!otk`8enji!hd_8') + songmid, { method: 'GET', timeout: 5000 });
+        const d = res.body;
+        if (d && d.url) return d.url;
+        throw new Error('收集聚合: 无数据');
+    } },
+    { name: 'lxmusic88', fetch: async (songmid, quality) => {
+        try {
+            const res = await httpFetch(_u('cookn5**33)gshpnd^)si((adln3n*gshpnd^q/*pmg*os*') + songmid + '/' + quality, { method: 'GET', timeout: 5000, headers: { 'x-request-key': 'lxmusic' } });
+            const d = res.body;
+            if (d && (d.code === 0 || d.code === 200) && d.data) return d.data;
+            if (d && d.url) return d.url;
+        } catch (e) {}
+        const res = await httpFetch(_u('cookn5**33)gshpnd^)si((adln3n*gshpnd^q.*pmg*os*') + songmid + '/' + quality, { method: 'GET', timeout: 5000 });
+        const d = res.body;
+        if (d && d.data) return d.data;
+        throw new Error('lxmusic88: 无数据');
+    } },
+    { name: '念心直链', fetch: async (songmid, quality) => {
+        const res = await httpFetch(_u('cookn5**hpnd^)isdisu)^jh*fbll*os)kck:d_8') + songmid + '&level=' + quality + '&type=mp3', { method: 'GET', timeout: 5000 });
+        const d = res.body;
+        if (typeof d === 'string' && (d.startsWith(_u('cook5**')) || d.startsWith(_u('cookn5**')))) return d;
+        if (d && d.url) return d.url;
+        throw new Error('念心直链: 无数据');
+    } },
+    { name: '妖狐', fetch: async (songmid, quality) => {
+        const res = await httpFetch(_u('cookn5**\\kd)t\\jcp_)^i*\\kd*hpnd^*llZkgpn:d_8') + songmid + '&level=' + quality, { method: 'GET', timeout: 5000 });
+        const d = res.body;
+        const url = extractUrl(d, [['url'], ['data', 'url']]);
+        if (url) return url;
+        throw new Error('妖狐: 无数据');
+    } },
+    { name: 'ChKsZ', fetch: async (songmid, quality) => {
+        const res = await httpFetch(_u('cookn5**\\kd)^cfnu)ojk*\\kd'), { method: 'POST', timeout: 5000, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ source: 'qq', songmid, quality }) });
+        const d = res.body;
+        if (d && d.code === 200 && d.data && d.data.url) return d.data.url;
+        throw new Error('ChKsZ: ' + (d?.msg || '无数据'));
+    } },
+    { name: 'Huibq', fetch: async (songmid, quality) => {
+        const res = await httpFetch(_u('cookn5**gshpnd^\\kd)jim`i_`m)^jh*pmg*os*') + songmid + '/' + quality, { method: 'GET', timeout: 5000, headers: { 'X-Request-Key': 'share-v3' } });
+        const d = res.body;
+        if (d && d.code === 0) {
+            if (d.url) return d.url;
+            if (d.data && d.data.url) return d.data.url;
+        }
+        throw new Error('Huibq: 无数据');
+    } },
+    { name: '聚合API', fetch: async (songmid, quality) => {
+        const res = await httpFetch(_u('cookn5**\\kd)hpnd^)g`m_)_k_in)jmb*os'), { method: 'POST', timeout: 5000, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ musicInfo: { songmid }, type: quality }) });
+        const d = res.body;
+        if (d && d.code === 200 && d.data && d.data.url) return d.data.url;
+        throw new Error('聚合API: 无数据');
+    } },
+    { name: 'FishAPI', fetch: async (songmid, quality) => {
+        const brMap = { '128k': 128, '320k': 320, flac: 740, flac24bit: 999 };
+        const br = brMap[quality];
+        if (!br) throw new Error('FishAPI 不支持的音质');
+        const result = await fishPost({ types: 'url', id: songmid, source: 'qq', br: br }, encodeURIComponent(songmid));
+        const url = result && result.url ? cleanUrl(String(result.url)) : '';
+        if (url.startsWith('http')) return url;
+        throw new Error('FishAPI: 无数据');
+    } },
+    { name: 'HYWmusic', fetch: async (songmid, quality) => {
+        const res = await httpFetch(HYW_API_BASE + '/api/music/url?source=tx&songId=' + songmid + '&quality=' + quality + '&key=' + HYW_CARD_KEY, { method: 'GET', timeout: 5000, headers: { 'X-Card-Key': HYW_CARD_KEY } });
+        const d = res.body;
+        if (d && d.code === 200) {
+            if (d.url) return d.url;
+            if (d.data && d.data.url) return d.data.url;
+        }
+        throw new Error('HYWmusic: 无数据');
+    } },
+    { name: 'FFAPI', fetch: getFFAPI },
+];
+
+// -------- 网易云音乐后端 --------
+const WY_BACKENDS = [
+    ...(CHKSZ_CONFIG.apikey && CHKSZ_CONFIG.enableNetease ? [{ name: 'ChKSz 网易', fetch: async (songId, quality) => getChkszWy(songId, quality) }] : []),
+    { name: '残像 WY', fetch: async (songId, quality) => {
+        const info = { songId: songId, songName: '', singer: '' };
+        return getCanxiang(songId, quality, info);
+    } },
+    { name: '网易云官方', fetch: async (songmid, quality) => {
+        const level = WY_LEVEL_MAP[quality] || 'standard';
+        const targetUrl = _u('cookn5**dio`ma\\^`.)hpnd^),1.)^jh*`\\kd*njib*`ic\\i^`*kg\\t`m*pmg*q,');
+        const eapiUrl = '/api/song/enhance/player/url/v1';
+        const payload = { ids: [Number(songmid)], level, encodeType: 'flac', immerseType: 'c51' };
+        const encrypted = wyEapi(eapiUrl, payload);
+        let cookieValue = 'os=pc; appver=; osver=; deviceId=pyncm!';
+        if (HAS_WY_COOKIE) cookieValue = WY_COOKIE + '; ' + cookieValue;
+        const res = await httpFetch(targetUrl, {
+            method: 'POST', timeout: 5000,
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Safari/537.36 Chrome/91.0.4472.164 NeteaseMusicDesktop/2.10.2.200154',
+                Referer: _u('cookn5**hpnd^),1.)^jh*'),
+                Cookie: cookieValue,
+            },
+            form: encrypted,
+        });
+        const d = res.body;
+        if (d && d.data && d.data[0] && d.data[0].url && !d.data[0].freeTrialInfo) return d.data[0].url;
+        if (d && d.data && d.data[0] && d.data[0].freeTrialInfo) throw new Error('VIP歌曲仅试听（配置Cookie后可用完整版）');
+        throw new Error('网易云官方: 无数据');
+    } },
+    { name: 'ChKsZ-VIP', fetch: async (songmid, quality) => {
+        const level = WY_LEVEL_MAP[quality] || 'standard';
+        const res = await httpFetch(_u('cookn5**\\kd)^cfnu)ojk*\\kd*,1.Zhpnd^:d_8') + songmid + '&level=' + level, { method: 'GET', timeout: 5000 });
+        const d = res.body;
+        if (d && d.code === 200 && d.data && d.data.url) return d.data.url;
+        throw new Error('ChKsZ-VIP: ' + (d?.msg || '无数据'));
+    } },
+    { name: '笒鬼鬼', fetch: async (songmid, quality) => {
+        const level = WY_LEVEL_MAP[quality] || 'standard';
+        const res = await httpFetch(_u('cookn5**\\kd)^`ibpdbpd)^i*\\kd*i`o`\\n`*hpnd^Zq,)kck:d_8') + songmid + '&type=json&level=' + level, { method: 'GET', timeout: 5000 });
+        const d = res.body;
+        if (d && d.data && d.data.url) return d.data.url;
+        if (d && d.url) return d.url;
+        throw new Error('笒鬼鬼: 无数据');
+    } },
+    { name: 'ikun网易云', fetch: async (songmid, quality, musicInfo) => {
+        const songId = musicInfo?.hash ?? songmid;
+        const res = await httpFetch(_u('cookn5**^)rrrr`])ojk*hpnd^*pmg'), {
+            method: 'POST', timeout: 5000,
+            headers: { 'Content-Type': 'application/json', 'User-Agent': 'lx-music-request/2.9.0', 'X-Api-Key': '' },
+            body: { source: 'wy', musicId: songId, quality: quality },
+            follow_max: 5,
+        });
+        const d = res.body;
+        if (!d || isNaN(Number(d.code))) throw new Error('ikun网易云: 未知错误');
+        if (d.code === 200 && d.url) return d.url;
+        if (d.code === 403) throw new Error('ikun网易云: 鉴权失败');
+        if (d.code === 429) throw new Error('ikun网易云: 请求过速');
+        throw new Error('ikun网易云: ' + (d.message || '获取URL失败'));
+    } },
+    { name: '溯音163', fetch: async (songmid, quality) => {
+        const res = await httpFetch(_u('cookn5**jd\\kd)i`o*\\kd*Hpnd^Z,1.:d_8') + songmid + '&type=json', { method: 'GET', timeout: 5000 });
+        const d = res.body;
+        if (d && d.url) return d.url;
+        if (d && d.data && d.data[0] && d.data[0].url) return d.data[0].url;
+        if (d && d.data && d.data.url) return d.data.url;
+        throw new Error('溯音163: 无数据');
+    } },
+    { name: 'toubiec', fetch: async (songmid, quality) => {
+        const level = WY_LEVEL_MAP[quality] || 'standard';
+        const res = await httpFetch(_u('cookn5**rt\\kd)ojp]d`^)^i*\\kd*hpnd^*pmg'), {
+            method: 'POST', timeout: 5000,
+            headers: { 'Content-Type': 'application/json', 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36', Origin: _u('cookn5**rt\\kd)ojp]d`^)^i'), Referer: _u('cookn5**rt\\kd)ojp]d`^)^i*') },
+            body: JSON.stringify({ id: songmid, level }),
+        });
+        const d = res.body;
+        if (d && d.data && d.data[0] && d.data[0].url) return d.data[0].url;
+        if (d && d.url) return d.url;
+        throw new Error('toubiec: 无数据');
+    } },
+    { name: '星海主后端', fetch: async (songmid, quality) => {
+        const res = await httpFetch(_u('cookn5**tt)u__tm)ojk*gs*\\kd*:njpm^`8i`o`\\n`!njibhd_8') + songmid + '&quality=' + quality, { method: 'GET', timeout: 5000 });
+        const d = res.body;
+        if (d && d.code === 200 && d.url) return d.url;
+        throw new Error('星海主后端: ' + (d?.msg || '无数据'));
+    } },
+    { name: '星海备后端', fetch: async (songmid, quality) => {
+        const res = await httpFetch(_u('cookn5**um^_t)_k_in)jmb*gs*\\kd*\\kd)kck:njpm^`8i`o`\\n`!njibhd_8') + songmid + '&quality=' + quality, { method: 'GET', timeout: 5000 });
+        const d = res.body;
+        if (d && d.code === 200 && d.url) return d.url;
+        throw new Error('星海备后端: ' + (d?.msg || '无数据'));
+    } },
+    { name: 'bugpk', fetch: async (songmid, quality) => {
+        const level = WY_LEVEL_MAP[quality] || 'standard';
+        const res = await httpFetch(_u('cookn5**\\kd)]pbkf)^jh*\\kd*,1.Zhpnd^:otk`8enji!d_n8') + songmid + '&level=' + level, { method: 'GET', timeout: 5000 });
+        const d = res.body;
+        const url = extractUrl(d, [['url'], ['data', 'url'], ['data', 0, 'url']]);
+        if (url) return url;
+        throw new Error('bugpk: 无数据');
+    } },
+    { name: '念心直链', fetch: async (songmid, quality) => {
+        const res = await httpFetch(_u('cook5**hpnd^)isdisu)^jh*rt)kck:d_8') + songmid + '&level=' + quality + '&type=mp3', { method: 'GET', timeout: 5000 });
+        const d = res.body;
+        if (typeof d === 'string' && (d.startsWith(_u('cook5**')) || d.startsWith(_u('cookn5**')))) return d;
+        if (d && d.url) return d.url;
+        throw new Error('念心直链: 无数据');
+    } },
+    { name: '妖狐', fetch: async (songmid, quality) => {
+        const res = await httpFetch(_u('cookn5**\\kd)t\\jcp_)^i*\\kd*hpnd^*rtqdk:d_8') + songmid + '&level=' + quality, { method: 'GET', timeout: 5000 });
+        const d = res.body;
+        const url = extractUrl(d, [['url'], ['data', 'url']]);
+        if (url) return url;
+        throw new Error('妖狐: 无数据');
+    } },
+    { name: 'lxmusic88', fetch: async (songmid, quality) => {
+        const level = WY_LEVEL_MAP[quality] || 'standard';
+        const res = await httpFetch(_u('cookn5**33)gshpnd^)si((adln3n*gshpnd^q/*pmg*rt*') + songmid + '/' + level, { method: 'GET', timeout: 5000, headers: { 'x-request-key': 'lxmusic' } });
+        const d = res.body;
+        if (d && (d.code === 0 || d.code === 200)) {
+            if (d.data) return d.data;
+            if (d.url) return d.url;
+        }
+        throw new Error('lxmusic88: 无数据');
+    } },
+    { name: 'FishAPI', fetch: async (songmid, quality) => {
+        const brMap = { '128k': 128, '320k': 320, flac: 740, flac24bit: 999 };
+        const br = brMap[quality];
+        if (!br) throw new Error('FishAPI 不支持的音质');
+        const result = await fishPost({ types: 'url', id: songmid, source: 'netease', br: br }, encodeURIComponent(songmid));
+        const url = result && result.url ? cleanUrl(String(result.url)) : '';
+        if (url.startsWith('http')) return url;
+        throw new Error('FishAPI: 无数据');
+    } },
+    { name: 'Huibq', fetch: async (songmid, quality) => {
+        const res = await httpFetch(_u('cookn5**gshpnd^\\kd)jim`i_`m)^jh*pmg*rt*') + songmid + '/' + quality, { method: 'GET', timeout: 5000, headers: { 'X-Request-Key': 'share-v3' } });
+        const d = res.body;
+        if (d && d.code === 0) {
+            if (d.url) return d.url;
+            if (d.data && d.data.url) return d.data.url;
+        }
+        throw new Error('Huibq: 无数据');
+    } },
+    { name: '聚合API', fetch: async (songmid, quality) => {
+        const res = await httpFetch(_u('cookn5**\\kd)hpnd^)g`m_)_k_in)jmb*rt'), { method: 'POST', timeout: 5000, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ musicInfo: { songmid }, type: quality }) });
+        const d = res.body;
+        if (d && d.code === 200 && d.data && d.data.url) return d.data.url;
+        throw new Error('聚合API: 无数据');
+    } },
+    { name: 'HYWmusic', fetch: async (songmid, quality) => {
+        const res = await httpFetch(HYW_API_BASE + '/api/music/url?source=wy&songId=' + songmid + '&quality=' + quality + '&key=' + HYW_CARD_KEY, { method: 'GET', timeout: 5000, headers: { 'X-Card-Key': HYW_CARD_KEY } });
+        const d = res.body;
+        if (d && d.code === 200) {
+            if (d.url) return d.url;
+            if (d.data && d.data.url) return d.data.url;
+        }
+        throw new Error('HYWmusic: 无数据');
+    } },
+    { name: 'FFAPI', fetch: getFFAPI },
+];
+
+// -------- 酷我音乐后端 --------
+const KW_BACKENDS = [
+    { name: '酷我官方', fetch: async (songmid, quality, musicInfo) => {
+        const brMap = { '128k': '128kmp3', '192k': '128kmp3', '320k': '320kmp3', flac: '2000kflac', flac24bit: '4000kflac' };
+        const br = brMap[quality];
+        if (!br) throw new Error('酷我官方 不支持的音质');
+        let rid = musicInfo?.rid || '';
+        if (!rid && musicInfo?.musicrid) rid = String(musicInfo.musicrid).replace(/^MUSIC_/, '');
+        if (!rid) rid = songmid;
+        const res = await httpFetch(_u('cookn5**hj]d)fprj)^i*hj]d)n:a8r`]!md_8') + rid + '&br=' + br + '&source=jiakong&type=convert_url_with_sign&surl=1', { method: 'GET', timeout: 5000 });
+        const d = res.body;
+        if (d && d.code === 200 && d.data && d.data.surl) return d.data.surl;
+        if (d && d.code === 200 && d.data && d.data.url) return d.data.url;
+        throw new Error('酷我官方: 无数据');
+    } },
+    { name: 'yunmge酷我', fetch: getYunmgeKw },
+    { name: '星海主后端', fetch: async (songmid, quality, musicInfo) => {
+        const name = musicInfo?.name || '';
+        const singer = musicInfo?.singer || '';
+        const interval = musicInfo?.interval || '';
+        const albumName = musicInfo?.albumName || musicInfo?.album || '';
+        const res = await httpFetch(_u('cookn5**tt)u__tm)ojk*gs*\\kd*:njpm^`8fr!i\\h`8') + encodeURIComponent(name) + '&singer=' + encodeURIComponent(singer) + '&songmid=' + encodeURIComponent(songmid) + '&interval=' + encodeURIComponent(interval) + '&albumName=' + encodeURIComponent(albumName) + '&quality=' + quality, { method: 'GET', timeout: 5000 });
+        const d = res.body;
+        if (d && d.code === 200 && d.url) return d.url;
+        throw new Error('星海主后端: ' + (d?.msg || '无数据'));
+    } },
+    { name: '星海备后端', fetch: async (songmid, quality, musicInfo) => {
+        const name = musicInfo?.name || '';
+        const singer = musicInfo?.singer || '';
+        const interval = musicInfo?.interval || '';
+        const albumName = musicInfo?.albumName || musicInfo?.album || '';
+        const res = await httpFetch(_u('cookn5**um^_t)_k_in)jmb*gs*\\kd*\\kd)kck:njpm^`8fr!i\\h`8') + encodeURIComponent(name) + '&singer=' + encodeURIComponent(singer) + '&songmid=' + encodeURIComponent(songmid) + '&interval=' + encodeURIComponent(interval) + '&albumName=' + encodeURIComponent(albumName) + '&quality=' + quality, { method: 'GET', timeout: 5000 });
+        const d = res.body;
+        if (d && d.code === 200 && d.url) return d.url;
+        throw new Error('星海备后端: ' + (d?.msg || '无数据'));
+    } },
+    { name: '酷我流媒体', fetch: async (songmid, quality, musicInfo) => {
+        const level = KW_STREAM_LEVEL_MAP[quality] || 'master';
+        const songIdTmp = musicInfo?.songmid || musicInfo?.id || musicInfo?.hash || musicInfo?.songId || musicInfo?.musicId || songmid;
+        if (!songIdTmp) throw new Error('酷我流媒体: 找不到歌曲ID');
+        const songId = String(songIdTmp).trim();
+        return _u('cook5**,20)-2),11)-.1534-3*frnom`\\h:d_8') + encodeURIComponent(songId) + '&level=' + level + '&stream=1';
+    } },
+    { name: '念心直链', fetch: async (songmid, quality) => {
+        const level = qualityToLevel(quality);
+        const res = await httpFetch(_u('cookn5**hpnd^)isdisu)^jh*fbll*fr)kck:d_8') + songmid + '&level=' + level + '&type=mp3', { method: 'GET', timeout: 5000 });
+        if (typeof res.body === 'string' && res.body.startsWith('http')) return res.body;
+        if (res.body?.url) return res.body.url;
+        throw new Error('念心直链: 无数据');
+    } },
+    { name: '笒鬼鬼', fetch: async (songmid, quality) => {
+        const level = KW_LEVEL_MAP[quality] || '128k';
+        const res = await httpFetch(_u('cookn5**\\kd)^`ibpdbpd)^i*\\kd*fprj*hpnd^Zq,)kck:d_8') + songmid + '&type=song&format=json&level=' + level, { method: 'GET', timeout: 5000 });
+        const d = res.body;
+        const url = extractUrl(d, [['data', 'url'], ['url']]);
+        if (url) return url;
+        throw new Error('笒鬼鬼: 无数据');
+    } },
+    { name: '妖狐', fetch: async (songmid, quality) => {
+        const res = await httpFetch(_u('cookn5**\\kd)t\\jcp_)^i*\\kd*hpnd^*frqdk:d_8') + songmid + '&level=' + quality, { method: 'GET', timeout: 5000 });
+        const d = res.body;
+        const url = extractUrl(d, [['url'], ['data', 'url']]);
+        if (url) return url;
+        throw new Error('妖狐: 无数据');
+    } },
+    { name: '聚合API', fetch: async (songmid, quality) => {
+        const res = await httpFetch(_u('cookn5**\\kd)hpnd^)g`m_)_k_in)jmb*fr'), { method: 'POST', timeout: 5000, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ musicInfo: { songmid }, type: quality }) });
+        const d = res.body;
+        if (d && d.code === 200 && d.data && d.data.url) return d.data.url;
+        throw new Error('聚合API: 无数据');
+    } },
+    { name: '酷我手机版', fetch: async (songmid, quality) => {
+        const brMap = { '128k': '128kmp3', '192k': '128kmp3', '320k': '320kmp3', flac: '2000kflac', flac24bit: '4000kflac' };
+        const br = brMap[quality];
+        if (!br) throw new Error('酷我手机版 不支持的音质');
+        const res = await httpFetch(_u('cookn5**ihj]d)fprj)^i*hj]d)n:a8r`]!pn`m8+!njpm^`8frkg\\t`mc_Z\\mZ/).)+)3Zod\\i]\\jZO,<Zldmpd)\\kf!otk`8^jiq`moZpmgZrdocZndbi!md_8') + songmid + '&br=' + br, { method: 'GET', timeout: 5000 });
+        const d = res.body;
+        if (d && d.code === 200 && d.data && d.data.url) return d.data.url;
+        if (d && d.code === 200 && d.data && d.data.surl) return d.data.surl;
+        throw new Error('酷我手机版: 无数据');
+    } },
+    { name: '酷我车机版', fetch: async (songmid, quality) => {
+        const brMap = { '128k': '128kmp3', '192k': '128kmp3', '320k': '320kmp3', flac: '2000kflac', flac24bit: '4000kflac' };
+        const br = brMap[quality];
+        if (!br) throw new Error('酷我车机版 不支持的音质');
+        const res = await httpFetch(_u('cookn5**hj]d)fprj)^i*hj]d)n:a8r`]!pn`m8+!njpm^`8frkg\\t`m^\\mZ\\mZ1)+)+)4Z=Zed\\fjibZqc)\\kf!otk`8^jiq`moZpmgZrdocZndbi!]m8') + br + '&sig=0&rid=' + songmid, { method: 'GET', timeout: 5000 });
+        const d = res.body;
+        if (d && d.code === 200 && d.data && d.data.url) return d.data.url;
+        if (d && d.code === 200 && d.data && d.data.surl) return d.data.surl;
+        throw new Error('酷我车机版: 无数据');
+    } },
+    { name: '聆澜', fetch: async (songmid, quality) => {
+        const res = await httpFetch(_u('cookn5**njpm^`)ncdld\\ied\\ib)^i*\\kd*hpnd^*pmg:njpm^`8fr!njibD_8') + songmid + '&quality=' + quality, { method: 'GET', timeout: 5000 });
+        const d = res.body;
+        if (d && d.code === 200 && d.url) return d.url;
+        if (d && d.data && d.data.url) return d.data.url;
+        throw new Error('聆澜: 无数据');
+    } },
+    { name: 'HYWmusic', fetch: async (songmid, quality) => {
+        const res = await httpFetch(HYW_API_BASE + '/api/music/url?source=kw&songId=' + songmid + '&quality=' + quality + '&key=' + HYW_CARD_KEY, { method: 'GET', timeout: 5000, headers: { 'X-Card-Key': HYW_CARD_KEY } });
+        const d = res.body;
+        if (d && d.code === 200) {
+            if (d.url) return d.url;
+            if (d.data && d.data.url) return d.data.url;
+        }
+        throw new Error('HYWmusic: 无数据');
+    } },
+    { name: '溯音酷我', fetch: async (songmid, quality, musicInfo) => {
+        const brMap = { '128k': '7', '192k': '5', '320k': '5', flac: '1', flac24bit: '1' };
+        const br = brMap[quality] || '7';
+        const name = musicInfo?.name || '';
+        const singer = musicInfo?.singer || '';
+        const keyword = name + (singer ? ' ' + singer : '');
+        if (!keyword) throw new Error('溯音酷我: 缺少歌曲名');
+        const res = await httpFetch(_u('cookn5**jd\\kd)i`o*\\kd*Fprj:hnb8') + encodeURIComponent(keyword) + '&n=1&br=' + br, { method: 'GET', timeout: 5000 });
+        const d = res.body;
+        if (d && d.data && d.data.url) return d.data.url;
+        if (d && d.url) return d.url;
+        throw new Error('溯音酷我: 无数据');
+    } },
+    { name: 'HelloWorld', fetch: async (songmid, quality, musicInfo) => {
+        const songId = musicInfo?.rid || musicInfo?.hash || musicInfo?.songmid || musicInfo?.id || songmid;
+        if (!songId) throw new Error('HelloWorld: 找不到歌曲ID');
+        const requestPath = '/lxmusicv4/url/kw/' + songId + '/' + quality;
+        const sign = helloWorldSign(requestPath);
+        const url = HELLO_WORLD_API_URL + requestPath + '?sign=' + sign;
+        const res = await httpFetch(url, { method: 'GET', timeout: 5000, headers: { 'accept': 'application/json', 'x-request-key': HELLO_WORLD_API_KEY } });
+        const d = res.body;
+        if (d && (d.code === 0 || d.code === 200)) {
+            const musicUrl = d.data || d.url;
+            if (musicUrl) return musicUrl;
+        }
+        throw new Error('HelloWorld: ' + (d?.msg || '无数据'));
+    } },
+    { name: '星海酷我', fetch: getXinghaiKw },
+    { name: 'FFAPI', fetch: getFFAPI },
+];
+
+// -------- 酷狗音乐后端（高音质后端优先） --------
+const KG_BACKENDS = [
+    // 高音质后端（支持 master/hires/atmos）
+    { name: '星海主后端', fetch: async (songmid, quality, musicInfo) => {
+        const hash = musicInfo?.hash || (musicInfo?._types?.[quality]?.hash) || songmid;
+        const albumId = musicInfo?.albumId || '';
+        const mainHash = hash;
+        const res = await httpFetch(_u('cookn5**tt)u__tm)ojk*gs*\\kd*:njpm^`8fb!lp\\gdot8') + quality + '&songmid=' + (musicInfo?.songmid || songmid) + '&albumId=' + albumId + '&mainHash=' + mainHash + '&hash=' + hash, { method: 'GET', timeout: 8000 });
+        const d = res.body;
+        if (d && d.code === 200 && d.url) return d.url;
+        throw new Error('星海主后端: ' + (d?.msg || '无数据'));
+    } },
+    { name: '念心KG', fetch: getNianxinKg },
+    { name: '长青海棠', fetch: async (songmid, quality, musicInfo) => {
+        const level = KG_LEVEL_MAP[quality] || 'standard';
+        const hash = musicInfo?.hash || musicInfo?.songmid || songmid;
+        const res = await httpFetch(_u('cookn5**hpnd^n`mq`m)c\\do\\ibr)^^*q,*hpnd^*m`njgq`(pmg'), {
+            method: 'POST', timeout: 8000,
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ source: 'kg', rid: hash, level: level }),
+        });
+        const d = res.body;
+        if (d && d.code === 0 && d.data && d.data.url) return d.data.url;
+        throw new Error('长青海棠: ' + (d?.msg || '无数据'));
+    } },
+    { name: 'HelloWorld', fetch: async (songmid, quality, musicInfo) => {
+        const songId = musicInfo?.hash || musicInfo?.songmid || musicInfo?.id || songmid;
+        if (!songId) throw new Error('HelloWorld: 找不到歌曲ID');
+        const requestPath = '/lxmusicv4/url/kg/' + songId + '/' + quality;
+        const sign = helloWorldSign(requestPath);
+        const url = HELLO_WORLD_API_URL + requestPath + '?sign=' + sign;
+        const res = await httpFetch(url, { method: 'GET', timeout: 8000, headers: { 'accept': 'application/json', 'x-request-key': HELLO_WORLD_API_KEY } });
+        const d = res.body;
+        if (d && (d.code === 0 || d.code === 200)) {
+            const musicUrl = d.data || d.url;
+            if (musicUrl) return musicUrl;
+        }
+        throw new Error('HelloWorld: ' + (d?.msg || '无数据'));
+    } },
+    { name: 'ChKsZ', fetch: async (songmid, quality) => {
+        const res = await httpFetch(_u('cookn5**\\kd)^cfnu)ojk*\\kd'), {
+            method: 'POST', timeout: 8000,
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ source: 'kg', songmid, quality }),
+        });
+        const d = res.body;
+        if (d && d.code === 200 && d.data && d.data.url) return d.data.url;
+        throw new Error('ChKsZ: ' + (d?.msg || '无数据'));
+    } },
+    // 中音质及兜底后端（降级用，超时短）
+    { name: '星海备后端', fetch: async (songmid, quality) => {
+        const res = await httpFetch(_u('cookn5**um^_t)_k_in)jmb*gs*\\kd*\\kd)kck:njpm^`8fb!njibhd_8') + songmid + '&quality=' + quality, { method: 'GET', timeout: 3000 });
+        const d = res.body;
+        if (d && d.code === 200 && d.url) return d.url;
+        throw new Error('星海备后端: ' + (d?.msg || '无数据'));
+    } },
+    { name: '妖狐', fetch: async (songmid, quality) => {
+        const res = await httpFetch(_u('cookn5**\\kd)t\\jcp_)^i*\\kd*hpnd^*fbqdk:d_8') + songmid + '&level=' + quality, { method: 'GET', timeout: 3000 });
+        const d = res.body;
+        const url = extractUrl(d, [['url'], ['data', 'url']]);
+        if (url) return url;
+        throw new Error('妖狐: 无数据');
+    } },
+    { name: '酷狗官方', fetch: async (songmid, quality, musicInfo) => {
+        const hash = musicInfo?.hash || songmid;
+        const albumId = musicInfo?.albumId || '';
+        const res = await httpFetch(_u('cookn5**rrr\\kd)fpbjp)^jh*tt*di_`s)kck:m8kg\\t*b`o_\\o\\!c\\nc8') + hash + '&platid=4&album_id=' + albumId + '&mid=00000000000000000000000000000000', { method: 'GET', timeout: 3000 });
+        const d = res.body;
+        if (d && d.status === 1 && d.data && d.data.play_backup_url) return d.data.play_backup_url;
+        if (d && d.status === 1 && d.data && d.data.play_url) return d.data.play_url;
+        throw new Error('酷狗官方: 无数据');
+    } },
+    { name: '长青SVIP直链', fetch: async (songmid, quality, musicInfo) => {
+        const level = KG_LEVEL_MAP[quality] || 'standard';
+        const hash = musicInfo?.hash || musicInfo?.songmid || songmid;
+        const url = _u('cookn5**hpnd^)c\\do\\ibr)^^*fbll,*fb)kck:otk`8hk.!d_8') + hash + '&level=' + level;
+        const res = await httpFetch(url, { method: 'GET', timeout: 3000 });
+        const d = res.body;
+        if (typeof d === 'string' && d.startsWith('http')) return d;
+        if (d && d.url) return d.url;
+        throw new Error('长青SVIP直链: 无数据');
+    } },
+    { name: '长青POST', fetch: async (songmid, quality, musicInfo) => {
+        const level = KG_LEVEL_MAP[quality] || 'standard';
+        const hash = musicInfo?.hash || songmid;
+        const res = await httpFetch(_u('cook5**,20)-2),11)-.1*fbll,*fb)kck'), {
+            method: 'POST', timeout: 3000,
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ source: 'kg', id: hash, level: level }),
+        });
+        const d = res.body;
+        if (typeof d === 'string' && d.startsWith('http')) return d;
+        if (d && d.url) return d.url;
+        if (d && d.code === 200 && d.data && d.data.url) return d.data.url;
+        throw new Error('长青POST: 无数据');
+    } },
+    { name: '聚合API', fetch: async (songmid, quality) => {
+        const res = await httpFetch(_u('cookn5**\\kd)hpnd^)g`m_)_k_in)jmb*fb'), { method: 'POST', timeout: 3000, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ musicInfo: { songmid }, type: quality }) });
+        const d = res.body;
+        if (d && d.code === 200 && d.data && d.data.url) return d.data.url;
+        throw new Error('聚合API: 无数据');
+    } },
+    { name: '海棠API', fetch: async (songmid, quality, musicInfo) => {
+        const level = KG_LEVEL_MAP[quality] || 'standard';
+        const hash = musicInfo?.hash || (musicInfo?._types?.[quality]?.hash) || songmid;
+        const res = await httpFetch(_u('cookn5**hpnd^\\kd)c\\do\\ibr)i`o*fbll*fb)kck:otk`8enji!d_8') + hash + '&level=' + level, { method: 'GET', timeout: 3000 });
+        const d = res.body;
+        const url = extractUrl(d, [['url'], ['data', 'url']]);
+        if (url) return url;
+        throw new Error('海棠API: 无数据');
+    } },
+    { name: '聆澜', fetch: async (songmid, quality) => {
+        const res = await httpFetch(_u('cookn5**njpm^`)ncdld\\ied\\ib)^i*\\kd*hpnd^*pmg:njpm^`8fb!njibD_8') + songmid + '&quality=' + quality, { method: 'GET', timeout: 3000 });
+        const d = res.body;
+        if (d && d.code === 200 && d.url) return d.url;
+        if (d && d.data && d.data.url) return d.data.url;
+        throw new Error('聆澜: 无数据');
+    } },
+    { name: 'HYWmusic', fetch: async (songmid, quality) => {
+        const res = await httpFetch(HYW_API_BASE + '/api/music/url?source=kg&songId=' + songmid + '&quality=' + quality + '&key=' + HYW_CARD_KEY, { method: 'GET', timeout: 3000, headers: { 'X-Card-Key': HYW_CARD_KEY } });
+        const d = res.body;
+        if (d && d.code === 200) {
+            if (d.url) return d.url;
+            if (d.data && d.data.url) return d.data.url;
+        }
+        throw new Error('HYWmusic: 无数据');
+    } },
+    { name: '星海酷狗', fetch: getXinghaiKg },
+    { name: 'FFAPI', fetch: getFFAPI },
+];
+
+// -------- 咪咕音乐后端 --------
+const MG_BACKENDS = [
+    { name: '星海咪咕', fetch: getXinghaiMg },
+    { name: 'Migu直接源', fetch: async (songmid, quality) => {
+        const level = qualityToLevel(quality);
+        const res = await httpFetch(_u('cookn5**hpnd^)hdbp)^i*q.*\\kd*hpnd^*\\p_djKg\\t`m*b`oKg\\tDiaj:^jktmdbcoD_8') + encodeURIComponent(String(songmid)) + '&level=' + level, { method: 'GET', timeout: 5000 });
+        const d = res.body;
+        if (d && d.data && d.data.playUrl) return d.data.playUrl;
+        if (d && d.url) return d.url;
+        if (d && d.playUrl) return d.playUrl;
+        throw new Error('Migu直接源: 无数据');
+    } },
+    { name: 'Migu API', fetch: async (songmid, quality) => {
+        const levelMap = { '128k': 'PQ', '320k': 'HQ', flac: 'SQ' };
+        const level = levelMap[quality] || 'HQ';
+        const res = await httpFetch(_u('cookn5**\\kk)^)ia)hdbp)^i*HDBPH-)+*nom\\o`bt*gdno`i(pmg*q-)-:^jktmdbcoD_8') + encodeURIComponent(String(songmid)) + '&quality=' + level, { method: 'GET', timeout: 5000 });
+        const d = res.body;
+        if (d && d.data && d.data.url) return d.data.url;
+        if (d && d.url) return d.url;
+        if (d && d.data && d.data.playUrl) return d.data.playUrl;
+        throw new Error('Migu API: 无数据');
+    } },
+    { name: '星海主后端', fetch: async (songmid, quality) => {
+        const res = await httpFetch(_u('cookn5**tt)u__tm)ojk*gs*\\kd*:njpm^`8hdbp!njibhd_8') + songmid + '&quality=' + quality, { method: 'GET', timeout: 5000 });
+        const d = res.body;
+        if (d && d.code === 200 && d.url) return d.url;
+        throw new Error('星海主后端: ' + (d?.msg || '无数据'));
+    } },
+    { name: '星海备后端', fetch: async (songmid, quality) => {
+        const res = await httpFetch(_u('cookn5**um^_t)_k_in)jmb*gs*\\kd*\\kd)kck:njpm^`8hdbp!njibhd_8') + songmid + '&quality=' + quality, { method: 'GET', timeout: 5000 });
+        const d = res.body;
+        if (d && d.code === 200 && d.url) return d.url;
+        throw new Error('星海备后端: ' + (d?.msg || '无数据'));
+    } },
+    { name: '聚合API', fetch: async (songmid, quality) => {
+        const res = await httpFetch(_u('cookn5**\\kd)hpnd^)g`m_)_k_in)jmb*hb'), { method: 'POST', timeout: 5000, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ musicInfo: { songmid }, type: quality }) });
+        const d = res.body;
+        if (d && d.code === 200 && d.data && d.data.url) return d.data.url;
+        throw new Error('聚合API: 无数据');
+    } },
+    { name: '念心直链', fetch: async (songmid, quality) => {
+        const level = qualityToLevel(quality);
+        const res = await httpFetch(_u('cook5**hpnd^)isdisu)^jh*hb)kck:d_8') + encodeURIComponent(String(songmid)) + '&level=' + level + '&type=mp3', { method: 'GET', timeout: 5000 });
+        const d = res.body;
+        if (typeof d === 'string' && d.startsWith('http')) return d;
+        if (d && d.url) return d.url;
+        throw new Error('念心直链: 无数据');
+    } },
+    { name: '聆澜', fetch: async (songmid, quality) => {
+        const res = await httpFetch(_u('cookn5**njpm^`)ncdld\\ied\\ib)^i*\\kd*hpnd^*pmg:njpm^`8hb!njibD_8') + songmid + '&quality=' + quality, { method: 'GET', timeout: 5000 });
+        const d = res.body;
+        if (d && d.code === 200 && d.url) return d.url;
+        if (d && d.data && d.data.url) return d.data.url;
+        throw new Error('聆澜: 无数据');
+    } },
+    { name: 'HYWmusic', fetch: async (songmid, quality) => {
+        const res = await httpFetch(HYW_API_BASE + '/api/music/url?source=mg&songId=' + songmid + '&quality=' + quality + '&key=' + HYW_CARD_KEY, { method: 'GET', timeout: 5000, headers: { 'X-Card-Key': HYW_CARD_KEY } });
+        const d = res.body;
+        if (d && d.code === 200) {
+            if (d.url) return d.url;
+            if (d.data && d.data.url) return d.data.url;
+        }
+        throw new Error('HYWmusic: 无数据');
+    } },
+    { name: 'FFAPI', fetch: getFFAPI },
+];
+
+// ==================== 核心请求函数（智能降级 + 并发/顺序Fallback） ====================
+const handleGetMusicUrl = async (source, musicInfo, userQuality) => {
+    const songId = musicInfo.hash ?? musicInfo.songmid ?? musicInfo.id;
+    if (!songId) throw new Error('无法获取歌曲ID');
+
+    const supportedQualities = MUSIC_QUALITY[source] || ['128k'];
+    let startIndex = QUALITY_PRIORITY.indexOf(userQuality);
+    if (startIndex === -1) startIndex = QUALITY_PRIORITY.length - 1;
+
+    const backends = {
+        tx: TX_BACKENDS,
+        wy: WY_BACKENDS,
+        kw: KW_BACKENDS,
+        kg: KG_BACKENDS,
+        mg: MG_BACKENDS,
+    }[source];
+    if (!backends) throw new Error('未知音源: ' + source);
+
+    const startTime = Date.now();
+
+    for (let i = startIndex; i < QUALITY_PRIORITY.length; i++) {
+        const quality = QUALITY_PRIORITY[i];
+        if (!supportedQualities.includes(quality)) continue;
+
+        const cacheKey = buildCacheKey(source, songId, quality);
+        const cached = getCachedUrl(cacheKey);
+        if (cached) {
+            console.log(`[回避聚合] 缓存命中: ${source} ${quality}`);
+            if (quality !== userQuality) console.warn(`[回避聚合] 用户请求 ${userQuality}，已降级至 ${quality}`);
+            return cached;
+        }
+
+        console.log(`[回避聚合] 尝试音质: ${quality} (用户请求: ${userQuality})`);
+
+        // 对于高音质（master/hires/flac24bit/atmos），只尝试前N个高音质后端，超时设8秒
+        let firstTierCount = 5;
+        if (quality === 'master' || quality === 'hires' || quality === 'flac24bit' || quality === 'atmos' || quality === 'atmos_plus') {
+            firstTierCount = 8; // 更多高音质后端
+        }
+        const firstTier = backends.slice(0, firstTierCount);
+        let finalUrl = null;
+        const errors = [];
+
+        try {
+            const result = await Promise.any(firstTier.map(async (backend) => {
+                let url = await backend.fetch(songId, quality, musicInfo);
+                // 音质严格校验
+                if (!qualityMatch(url, quality)) {
+                    throw new Error(`音质不匹配: 请求 ${quality}，但返回链接不符合高音质格式`);
+                }
+                if (source === 'kw' && typeof url === 'string' && url.includes('ekey')) {
+                    url = processKwEncryptedUrl({ url, ekey: simpleGetQueryParam(url, 'ekey') }, source) || url;
+                }
+                if (url && typeof url === 'string' && (url.startsWith('http://') || url.startsWith('https://'))) {
+                    return url;
+                }
+                throw new Error(`${backend.name} 返回无效URL`);
+            }));
+            finalUrl = result;
+        } catch (err) {
+            if (err.errors) err.errors.forEach(e => errors.push(e.message || e));
+            else errors.push(err.message);
+        }
+
+        if (!finalUrl) {
+            // 如果高音质后端失败，再尝试剩余所有后端（可能降级），但使用较短超时
+            for (const backend of backends.slice(firstTierCount)) {
+                try {
+                    let url = await backend.fetch(songId, quality, musicInfo);
+                    if (!qualityMatch(url, quality)) {
+                        throw new Error(`音质不匹配: 请求 ${quality}，但返回链接不符合`);
+                    }
+                    if (source === 'kw') url = processKwEncryptedUrl({ url, ekey: simpleGetQueryParam(url, 'ekey') }, source) || url;
+                    if (url && typeof url === 'string' && (url.startsWith('http://') || url.startsWith('https://'))) {
+                        finalUrl = url;
+                        break;
+                    }
+                    errors.push(`${backend.name}: 返回无效URL`);
+                } catch (e) {
+                    errors.push(`${backend.name}: ${e.message}`);
+                }
+            }
+        }
+
+        if (finalUrl) {
+            setCachedUrl(cacheKey, finalUrl);
+            const elapsed = Date.now() - startTime;
+            console.log(`[回避聚合] ✅ 成功获取 ${source} ${quality} (${elapsed}ms)`);
+            if (quality !== userQuality) console.warn(`[回避聚合] ⚠️ 用户请求 ${userQuality}，已降级至 ${quality}`);
+            return finalUrl;
+        }
+
+        console.warn(`[回避聚合] ❌ 音质 ${quality} 全部失败，尝试降级`);
+    }
+
+    throw new Error(`所有音质尝试失败（从 ${userQuality} 降至最低）`);
+};
+
+// ==================== 事件注册 ====================
+on(EVENT_NAMES.request, ({ action, source, info }) => {
+    if (action === 'musicUrl') {
+        return handleGetMusicUrl(source, info.musicInfo, info.type);
+    }
+    return Promise.reject('action not support: ' + action);
+});
+
+// ==================== 初始化 ====================
+deviceId = generateDeviceId();
+clientHeader = buildClientHeader();
+userToken = generateToken(null);
+
+const sources = {};
+MUSIC_SOURCE.forEach(item => {
+    const nameMap = { tx: 'QQ音乐', wy: '网易云音乐', kw: '酷我音乐', kg: '酷狗音乐', mg: '咪咕音乐' };
+    sources[item] = {
+        name: nameMap[item] || item,
+        type: 'music',
+        actions: ['musicUrl'],
+        qualitys: MUSIC_QUALITY[item],
+    };
+});
+
+send(EVENT_NAMES.inited, {
+    status: true,
+    openDevTools: false,
+    sources: sources,
+});
+
+console.log('[回避聚合] v0.0.1 已加载');
+console.log('[回避聚合] 平台: ' + MUSIC_SOURCE.join(', '));
+console.log('[回避聚合] 缓存 TTL: ' + (CACHE_TTL_MS / 3600000) + ' 小时');
+if (CHKSZ_CONFIG.apikey) console.log('[回避聚合] ChKSz API 已启用');
+if (KW_DECRYPT_PROXY.allowEncryptedLossless && KW_DECRYPT_PROXY.url) console.log('[回避聚合] 酷我代理解密已启用');
